@@ -1,22 +1,45 @@
 
   'use strict';
   function Play() {}
+
+  var cursors;
+  var movement = 75;
+
   Play.prototype = {
     create: function() {
-      this.game.physics.startSystem(Phaser.Physics.ARCADE);
+      this.game.physics.startSystem(Phaser.Physics.P2JS);
+      this.game.physics.p2.defaultRestitution = 0.8;
       this.sprite = this.game.add.sprite(this.game.width/2, this.game.height/2, 'yeoman');
       this.sprite.inputEnabled = true;
       
-      this.game.physics.arcade.enable(this.sprite);
-      this.sprite.body.collideWorldBounds = true;
-      this.sprite.body.bounce.setTo(1,1);
-      this.sprite.body.velocity.x = this.game.rnd.integerInRange(-500,500);
-      this.sprite.body.velocity.y = this.game.rnd.integerInRange(-500,500);
+      this.game.physics.p2.enable(this.sprite);
 
-      this.sprite.events.onInputDown.add(this.clickListener, this);
+      this.sprite.body.setZeroDamping();
+      this.sprite.body.fixedRotation = true;
+      this.sprite.body.velocity.x = 35;
+      this.sprite.body.velocity.y = 35;
+
+      cursors = this.game.input.keyboard.createCursorKeys();
     },
     update: function() {
+      //this.sprite.body.setZeroVelocity();
+      if (cursors.left.isDown)
+      {
+        this.sprite.body.moveLeft(movement);
+      }
+      else if (cursors.right.isDown)
+      {
+        this.sprite.body.moveRight(movement);
+      }
 
+      if (cursors.up.isDown)
+      {
+        this.sprite.body.moveUp(movement);
+      }
+      else if (cursors.down.isDown)
+      {
+        this.sprite.body.moveDown(movement);
+      }
     },
     clickListener: function() {
       this.game.state.start('gameover');
