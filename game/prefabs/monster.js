@@ -23,7 +23,7 @@ Monster.prototype.constructor = Monster;
 Monster.prototype.update = function() {
   //this.sprite.body.setZeroVelocity();
   if (this.position.y > 300)
-    this.body.data.gravityScale = 0.25;
+    this.body.data.gravityScale = -0.2;
   else
     this.body.data.gravityScale = 1;
   

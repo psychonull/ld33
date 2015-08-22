@@ -5,12 +5,19 @@
 
   var Monster = require('../prefabs/monster');
 
+  var graphics;
 
   Play.prototype = {
     create: function() {
       this.game.stage.backgroundColor = "#CCCCCC";
       this.game.physics.startSystem(Phaser.Physics.P2JS);
-      this.game.physics.p2.gravity.y = 200;
+      this.game.physics.p2.gravity.y = 100;
+      this.game.physics.p2.restitution = 0.1;
+
+      graphics = this.game.add.graphics(0, 0);
+      graphics.lineStyle(10, 0x33FF00);
+      graphics.moveTo(0,300);
+      graphics.lineTo(800, 300);
 
       this.monster = new Monster(this.game, 200, 200);
       this.game.add.existing(this.monster);
