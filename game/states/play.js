@@ -8,8 +8,9 @@
 
   Play.prototype = {
     create: function() {
-      this.game.stage.backgroundColor = "#000000";
+      this.game.stage.backgroundColor = "#CCCCCC";
       this.game.physics.startSystem(Phaser.Physics.P2JS);
+      this.game.physics.p2.gravity.y = 200;
 
       this.monster = new Monster(this.game, 200, 200);
       this.game.add.existing(this.monster);
