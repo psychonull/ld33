@@ -1,5 +1,8 @@
 
   'use strict';
+
+  var Hud = require('../prefabs/hud.js');
+
   function Play() {}
 
   var cursors;
@@ -21,6 +24,9 @@
       this.sprite.body.velocity.y = 35;
 
       cursors = this.game.input.keyboard.createCursorKeys();
+
+      this.hud = new Hud(this.game);
+      this.game.add.existing(this.hud);
     },
     update: function() {
       //this.sprite.body.setZeroVelocity();
