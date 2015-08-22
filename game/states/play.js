@@ -1,5 +1,8 @@
 
   'use strict';
+
+  var Hud = require('../prefabs/hud.js');
+
   function Play() {}
 
 
@@ -22,9 +25,12 @@
       this.monster = new Monster(this.game, 200, 200);
       this.game.add.existing(this.monster);
       this.game.physics.p2.defaultRestitution = 0.8;
+
+      this.hud = new Hud(this.game);
+      this.game.add.existing(this.hud);
     },
     update: function() {
-      
+
     },
     clickListener: function() {
       this.game.state.start('gameover');
