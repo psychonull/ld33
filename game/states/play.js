@@ -87,6 +87,7 @@ Play.prototype = {
 	  person.sprite.afterDestroyed();
 	  person.sprite.destroy();
 	  person.destroy();
+    this.game.state.start('gameover');
   }
 };
 
