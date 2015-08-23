@@ -11,12 +11,15 @@ var Monster = function(game, x, y, frame) {
   this.scale.x = 0.1;
   this.scale.y = 0.1;
 
-  this.SPEED = 200;
+  this.SPEED = 500;
   this.TURN_RATE = 100;
 
   
-  this.game.physics.p2.enable(this);
+  this.game.physics.p2.enable(this, true);
+  this.body.setCircle(20);
+  this.anchor.set(0.7,0.5);
 
+  
   //this.body.velocity.x = 35;
   //this.body.velocity.y = 35;
   //this.body.kinematic = true;
@@ -28,26 +31,30 @@ Monster.prototype.constructor = Monster;
 
 Monster.prototype.update = function() {
   //this.sprite.body.setZeroVelocity();
-  //if (this.position.y > 300)
-  //  this.body.data.gravityScale = -0.2;
-  //else
-  //  this.body.data.gravityScale = 1;
+  if (this.position.y > 300)
+    this.body.data.gravityScale = -0.2;
+  else
+    this.body.data.gravityScale = 1;
 
-  //if (this.position.y > 300){
-    if (cursors.left.isDown)
+  if (cursors.left.isDown)
     {
       //this.body.angle -= 5;
-      this.body.rotation -= 0.2;
+      this.body.rotation -= 0.1;
+      this.body.angularVelocity = 0;
       //this.body.rotateLeft(this.TURN_RATE);
       //this.body.moveLeft(movement);
     }
     else if (cursors.right.isDown)
     {
-      this.body.rotation += 0.2;
+      this.body.rotation += 0.1;
+      this.body.angularVelocity = 0;
       //this.body.angle += 5;
       //this.body.rotateRight(this.TURN_RATE);
       //this.body.moveRight(movement);
     }
+
+  if (this.position.y > 300){
+    
 
     if (cursors.up.isDown)
     {
@@ -58,7 +65,7 @@ Monster.prototype.update = function() {
     {
       //this.body.moveDown(movement);
     }
-  //}
+  
 
    /*var targetAngle = this.game.math.angleBetween(
         this.x, this.y,
@@ -91,6 +98,11 @@ Monster.prototype.update = function() {
     // Calculate velocity vector based on this.rotation and this.SPEED
     this.body.velocity.x = Math.cos(this.rotation) * this.SPEED;
     this.body.velocity.y = Math.sin(this.rotation) * this.SPEED;
+    }    
+
+
+    //this.body.width = this.getBounds().width;
+    //this.body.height = this.getBounds().height;
   
 };
 

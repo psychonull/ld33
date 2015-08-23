@@ -9,10 +9,10 @@
 
   Play.prototype = {
     create: function() {
-      this.game.stage.backgroundColor = "#CCCCCC";
+      this.game.stage.backgroundColor = "#A6947B";
       this.game.physics.startSystem(Phaser.Physics.P2JS);
-      //this.game.physics.p2.gravity.y = 250;
-      this.game.physics.p2.restitution = 0.9;
+      this.game.physics.p2.gravity.y = 400;
+      //this.game.physics.p2.restitution = 0.9;
 
       graphics = this.game.add.graphics(0, 0);
       graphics.lineStyle(10, 0x33FF00);
