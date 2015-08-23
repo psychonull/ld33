@@ -6,9 +6,11 @@ var Hud = function(game) {
 
   this.bar = new Bar(this.game);
   this.bar.x = 300;
-  this.bar.y = 0;
+  this.bar.y = 10;
   this.game.add.existing(this.bar);
+
   this.add(this.bar);
+  this.fixedToCamera = true;
 };
 
 Hud.prototype = Object.create(Phaser.Group.prototype);
