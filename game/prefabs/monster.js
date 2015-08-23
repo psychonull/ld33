@@ -7,7 +7,7 @@ var settings = require('../settings');
 
 var Monster = function(game, x, y, frame) {
   Phaser.Sprite.call(this, game, x, y, 'monster', frame);
-  this.maxSpeed = 1000;
+  this.maxSpeed = settings.monster_max_speed;
   this.inputEnabled = true;
 
   this.scale.x = 0.4;
@@ -15,15 +15,13 @@ var Monster = function(game, x, y, frame) {
 
   this.swimming = false;
   this.back_landing = false;
-  this.base_speed = 300;
+  this.base_speed = settings.monster_base_speed;
   this.speed = this.base_speed;
   this.turn_rate = 0.1;
   this.diveFX = game.add.audio('splash', 10);
   this.jumpFX = game.add.audio('roar', 15);
 
-  game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.updateVelocity.bind(this));
-
-  //var stime = 1000;
+  game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.updateVelocity.bind(this));  
 
   this.game.physics.p2.enable(this, false);
   this.body.setCircle(20);
@@ -69,8 +67,6 @@ Monster.prototype.swim = function() {
     this.body.velocity.x = Math.cos(this.rotation) * this.speed;
     this.body.velocity.y = Math.sin(this.rotation) * this.speed;
   }
-
-
   console.log(this.body.velocity.y);
 };
 
@@ -114,6 +110,11 @@ Monster.prototype.updateVelocity = function() {
 
 Monster.prototype.jump = function() {
   this.jumpFX.play();
+};
+
+Monster.prototype.increaseSize = function() {
+  this.scale.x += settings.growth_scale;
+  this.scale.y += settings.growth_scale;
 };
 
 module.exports = Monster;
