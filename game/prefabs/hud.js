@@ -22,9 +22,9 @@ var Hud = function(game) {
   this.add(this.timer);
 
   this.timer.start();
-  this.timer.expired.add(function(){
-    console.log('timer expired');
-  });
+  this.timer.expired.add(_.bind(function(){
+    this.game.state.start('gameover');
+  }, this));
 
 };
 

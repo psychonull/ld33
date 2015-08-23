@@ -16,7 +16,7 @@ var waterLineCollisionGroup;
 var foodGenerator;
 var personGenerator;
 
-function Play() {  
+function Play() {
 }
 
 Play.prototype = {
@@ -82,7 +82,7 @@ Play.prototype = {
 	  person.sprite.afterDestroyed();
 	  person.sprite.destroy();
 	  person.destroy();
-    this.game.state.start('gameover');
+    this.game.state.start('win');
   }
 };
 
