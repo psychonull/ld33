@@ -28,6 +28,7 @@ Play.prototype = {
     var wLevel = settings.water_level;
     var imgSizeH = 1400;
 
+    game.onSpeedChange = new Phaser.Signal();
     game.add.tileSprite(0, wLevel-imgSizeH, ws.width, imgSizeH, 'bg_sky');
     game.add.tileSprite(0, wLevel, ws.width, imgSizeH, 'bg_water');
 
@@ -58,8 +59,9 @@ Play.prototype = {
     this.monster.body.collides(personCollisionGroup, this.hitPerson, this);
     this.game.add.existing(this.monster);
 
-    foodGenerator = new FoodGenerator(this.game, 500, 950, 100, monsterCollisionGroup, foodCollisionGroup)
+    foodGenerator = new FoodGenerator(this.game, 500, 950, 50, monsterCollisionGroup, foodCollisionGroup)
     personGenerator = new PersonGenerator(this.game, 300, 340, 10000, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup);
+    personGenerator.createPersons(1, 1);
 
     this.water = new Water(this.game, monsterCollisionGroup, waterLineCollisionGroup);
     this.game.add.existing(this.water);
@@ -80,7 +82,7 @@ Play.prototype = {
   hitFood: function(monster, food) {
     foodGenerator.dicreaseCurrentFood();
     monster.sprite.speed += 100;
-	  food.sprite.afterDestroyed();
+    food.sprite.afterDestroyed();
     food.sprite.destroy();
     food.destroy();
   },
@@ -93,10 +95,14 @@ Play.prototype = {
 	    console.log('COLLIDE');
   },
   hitPerson: function(monster, person) {
-	  person.sprite.afterDestroyed();
-	  person.sprite.destroy();
-	  person.destroy();
-    this.game.state.start('win');
+	person.sprite.afterDestroyed();
+	person.sprite.destroy();
+    person.destroy();
+    this.hud.setTimer(20);
+    personGenerator.createPersons(1, 100);
+    monster.sprite.scale.x += 0.01;
+    monster.sprite.scale.y += 0.01;
+    //this.game.state.start('win');
   }
 };
 

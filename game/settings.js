@@ -3,5 +3,5 @@ module.exports = {
     width: 1000,
   	height: 1920
   },
-  water_level: 550
+  water_level: 650
 };

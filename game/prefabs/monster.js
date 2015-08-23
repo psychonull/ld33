@@ -4,9 +4,10 @@ var movement = 250;
 var cursors;
 var settings = require('../settings');
 
+
 var Monster = function(game, x, y, frame) {
   Phaser.Sprite.call(this, game, x, y, 'Shark', frame);
-  
+  this.maxSpeed = 1000;
   this.inputEnabled = true;
 
   this.scale.x = 0.1;
@@ -14,7 +15,11 @@ var Monster = function(game, x, y, frame) {
 
   this.swimming = false;
   this.back_landing = false;
+<<<<<<< HEAD
   this.base_speed = 500;
+=======
+  this.base_speed = 300;
+>>>>>>> branch 'master' of https://github.com/psychonull/ld33.git
   this.speed = this.base_speed;
   this.turn_rate = 0.1;
   this.diveFX = game.add.audio('splash', 10);
@@ -55,13 +60,6 @@ Monster.prototype.update = function() {
     this.body.angularVelocity = 0;
     //this.back_landing = false;
   }
-
-  /*var dt = this.game.time.getElapsedTime();
-  this.stime -= dt *1000;
-  if(this.stime<=0){
-    this.bla*();
-    this.stime=1000;
-  }*/
 };
 
 Monster.prototype.swim = function() {
@@ -69,12 +67,25 @@ Monster.prototype.swim = function() {
       this.dive();
 
   this.swimming = true;
-  this.body.data.gravityScale = -0.1;
+  this.body.data.gravityScale = -0.5;
 
   if (!this.back_landing){
     this.body.velocity.x = Math.cos(this.rotation) * this.speed;
     this.body.velocity.y = Math.sin(this.rotation) * this.speed;
   }
+
+
+  console.log(this.body.velocity.y);
+};
+
+Monster.prototype.updateVelocity = function() {
+  if (this.speed >= 0)
+    this.back_landing = false;
+
+  if (this.speed < this.base_speed)
+    this.speed += 10;
+  else
+    this.speed -= 5;
 };
 
 Monster.prototype.fly = function() {
@@ -88,8 +99,8 @@ Monster.prototype.fly = function() {
 Monster.prototype.dive = function() {
   this.diveFX.play();
   if (this.angle < 0){
-    this.back_landing = true
-    this.speed = 0; 
+    this.back_landing = true;
+    this.speed = 0;    
   }
 };
 
@@ -101,6 +112,8 @@ Monster.prototype.updateVelocity = function() {
     this.speed += 10;
   else
     this.speed -= 5;
+
+  this.game.onSpeedChange.dispatch(this.speed/this.maxSpeed);
 };
 
 Monster.prototype.jump = function() {
