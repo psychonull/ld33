@@ -1,4 +1,5 @@
 'use strict';
+var settings = require('../settings');
 
 var Food = function(game, x, y, frame) {
   Phaser.Sprite.call(this, game, x, y, tank(), frame);
@@ -6,7 +7,7 @@ var Food = function(game, x, y, frame) {
   this.x = x;
   this.y = y;
   
-  this.originalY = y;
+  this.originalX = x;
   this.worldWidth = game.world.width;
 
   this.width = 40;
@@ -22,8 +23,9 @@ var Food = function(game, x, y, frame) {
   
   this.body.setZeroDamping();
   this.body.fixedRotation = true;
-  this.body.velocity.x = 25;
-  this.body.velocity.y = 50;  
+  this.body.velocity.x = 100;
+  this.body.velocity.y = 1;
+  this.body.data.gravityScale = -0.3;
 };
 
 Food.prototype = Object.create(Phaser.Sprite.prototype);
@@ -55,15 +57,13 @@ function tank() {
 }
 
 Food.prototype.update = function() {
-	
-	if (this.y <= this.originalY - 25) 
-		this.body.velocity.y = 50;
-	else if (this.y >= this.originalY + 25)
-		this.body.velocity.y = -50;
-	if (this.x >= this.worldWidth - 25)
-		this.body.velocity.x = -25;
-	else if (this.x <= 25)
-		this.body.velocity.x = 25;
+	this.body.velocity.y = 10;
+	if (this.x <= this.originalX - 50) 
+		this.body.force.x = 100;
+	else if (this.x >= this.originalX + 50)
+		this.body.force.x = -100;
+	if (this.y >= settings.worldSize.height - 50)
+		this.destroy();
 };
 
 module.exports = Food;
