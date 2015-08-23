@@ -15,7 +15,7 @@ var Monster = function(game, x, y, frame) {
 
   this.swimming = false;
   this.back_landing = false;
-  this.base_speed = 100;
+  this.base_speed = 300;
   this.speed = this.base_speed;
   this.turn_rate = 0.1;
   this.diveFX = game.add.audio('splash', 10);
@@ -56,13 +56,6 @@ Monster.prototype.update = function() {
     this.body.angularVelocity = 0;
     //this.back_landing = false;
   }
-
-  /*var dt = this.game.time.getElapsedTime();
-  this.stime -= dt *1000;
-  if(this.stime<=0){
-    this.bla*();
-    this.stime=1000;
-  }*/
 };
 
 Monster.prototype.swim = function() {
