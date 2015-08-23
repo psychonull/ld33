@@ -11,7 +11,7 @@ var Bar = function(game, options) {
     leftMargin: 100, //space reserved for caption (?)
     innerColor: "#F79000",
     outerColor: "#A6947B",
-    caption: 'STATS'
+    caption: 'SPEED'
   });
 
   this.value = this.config.value;
