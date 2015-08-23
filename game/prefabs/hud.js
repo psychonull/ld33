@@ -22,11 +22,14 @@ var Hud = function(game) {
   	this.bar.setValue(val);
   }, this));
 
+  this.clockIcon = this.game.add.sprite(10, 560, 'clock-icon');
+  this.add(this.clockIcon);
+
   this.timer = new Cowntdown(game, {
     value: 2000 * 1000
   });
 
-  this.timer.x = 10;
+  this.timer.x = 50;
   this.timer.y = 560;
 
   this.game.add.existing(this.timer);
@@ -37,7 +40,7 @@ var Hud = function(game) {
     this.game.state.start('gameover');
   }, this));
 
-  this.muteButton = new MuteButton(this.game, 200, 554);
+  this.muteButton = new MuteButton(this.game, 300, 554);
   this.game.add.existing(this.muteButton);
   this.add(this.muteButton);
 };
