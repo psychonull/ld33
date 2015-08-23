@@ -6,7 +6,7 @@ var Person = function(game, x, y, frame) {
   this.x = x;
   this.y = y;
   
-  this.originalY = y;
+  this.originalX = x;
   this.worldWidth = game.world.width;
 
   this.width = 40;
@@ -25,6 +25,9 @@ var Person = function(game, x, y, frame) {
   this.body.velocity.x = 200;
   this.body.velocity.y = 0;  
   this.body.mass = 2;
+  
+  this.dir = 1;
+  
 };
 
 Person.prototype = Object.create(Phaser.Sprite.prototype);
@@ -43,11 +46,15 @@ Person.prototype.afterDestroyed = function(){
 };
 
 Person.prototype.update = function() {
-	this.body.velocity.y = 0;
-	if (this.x >= this.worldWidth - 25)
-		this.body.velocity.x = -200;
-	else if (this.x <= 25)
-		this.body.velocity.x = 200;
+	this.body.velocity.y = 40;
+	if (this.x >= this.worldWidth - 100){
+		this.dir = -1;
+	}
+	else if (this.x <= 100){
+		this.dir = 1;
+	}
+	
+	this.body.velocity.x = this.dir*200;
 };
 
 module.exports = Person;

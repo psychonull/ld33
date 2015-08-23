@@ -112,4 +112,9 @@ Monster.prototype.jump = function() {
   this.jumpFX.play();
 };
 
+Monster.prototype.increaseSize = function() {
+  this.scale.x += settings.growth_scale;
+  this.scale.y += settings.growth_scale;
+};
+
 module.exports = Monster;

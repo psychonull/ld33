@@ -103,8 +103,7 @@ Play.prototype = {
     person.destroy();
     this.hud.setTimer(20);
     personGenerator.createPersons(1, 100);
-    monster.sprite.scale.x += 0.05;
-    monster.sprite.scale.y += 0.05;
+    monster.sprite.increaseSize();
     //this.game.state.start('win');
   }
 };
