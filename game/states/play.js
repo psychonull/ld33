@@ -4,6 +4,8 @@
   var Hud = require('../prefabs/hud.js');
   var Monster = require('../prefabs/monster');
   var graphics;
+  var monsterCollisionGroup;
+  var foodCollisionGroup;
   
   function Play() {}
 
@@ -13,6 +15,12 @@
       this.game.physics.startSystem(Phaser.Physics.P2JS);
       this.game.physics.p2.gravity.y = 100;
       this.game.physics.p2.restitution = 0.1;
+      this.game.physics.p2.setImpactEvents(true);
+      this.game.physics.p2.defaultRestitution = 0.8;
+
+      monsterCollisionGroup = this.game.physics.p2.createCollisionGroup();
+      foodCollisionGroup = this.game.physics.p2.createCollisionGroup();
+      this.game.physics.p2.updateBoundsCollisionGroup();
 
       graphics = this.game.add.graphics(0, 0);
       graphics.lineStyle(10, 0x33FF00);
@@ -20,20 +28,34 @@
       graphics.lineTo(800, 300);
 
       this.monster = new Monster(this.game, 200, 200);
+      this.monster.body.setCircle(28);
+      this.monster.body.setCollisionGroup(monsterCollisionGroup);
+      this.monster.body.collides(foodCollisionGroup, this.hitFood, this);
       this.game.add.existing(this.monster);
-      this.game.physics.p2.defaultRestitution = 0.8;
+      
 
       var food = new Food(this.game, 100, 300);
+      food.body.setRectangle(40, 40);
+      food.body.setCollisionGroup(foodCollisionGroup);
+      food.body.collides([foodCollisionGroup, monsterCollisionGroup]);
       this.game.add.existing(food);
 
       this.hud = new Hud(this.game);
       this.game.add.existing(this.hud);
+
     },
     update: function() {
 
     },
-    clickListener: function() {
-      this.game.state.start('gameover');
+    hitFood: function(monster, food) {
+      //food.exists = false;
+      //food.body = null;
+      //food.kill = true;
+      //food.destroy(true);
+      //food.removeFromWorld();
+      //food.body.destroy(true);
+      food.sprite.destroy();
+      food.destroy();
     }
   };
 
