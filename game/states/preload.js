@@ -18,6 +18,7 @@ Preload.prototype = {
     this.load.bitmapFont('ka', 'assets/fonts/ka.png', 'assets/fonts/ka.fnt');
     this.load.bitmapFont('arcade', 'assets/fonts/arcade.png', 'assets/fonts/arcade.fnt');
     this.load.audio('splash', 'assets/audio/SoundEffects/splash.mp3');
+    this.load.audio('theme', 'assets/audio/Music/MusicTheme.wav');
 
   },
   create: function() {
