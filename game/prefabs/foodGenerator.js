@@ -6,7 +6,7 @@ var foodCollisionGroup;
 
 var FoodGenerator = function(game, point1, point2, timer, monsterCollisionGroup, foodCollisionGroup) {
 	this.point1 = point1;
-	this.point2 = point2; //new Phaser.Point(x, y);
+	this.point2 = point2;
 	this.timer = timer;
 	this.game = game;
 	this.monsterCollisionGroup = monsterCollisionGroup;
