@@ -72,7 +72,7 @@ Play.prototype = {
     this.hud = new Hud(this.game);
     this.game.add.existing(this.hud);
 
-    //game.camera.follow(this.monster);
+    game.camera.follow(this.monster);
 
   },
   update: function() {
