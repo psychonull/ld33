@@ -50,7 +50,7 @@ Play.prototype = {
     personCollisionGroup = this.game.physics.p2.createCollisionGroup();
     this.game.physics.p2.updateBoundsCollisionGroup();
 
-    this.monster = new Monster(this.game, 500, 1500);
+    this.monster = new Monster(this.game, 100, 100);
     this.monster.body.setCircle(28);
     this.monster.body.setCollisionGroup(monsterCollisionGroup);
     this.monster.body.collides(foodCollisionGroup, this.hitFood, this);
@@ -59,8 +59,8 @@ Play.prototype = {
     this.monster.body.collides(personCollisionGroup, this.hitPerson, this);
     this.game.add.existing(this.monster);
 
-    var point1 = new Phaser.Point(0, settings.water_level);
-    var point2 = new Phaser.Point(settings.width, settings.water_level + settings.bg_image_size);
+    var point1 = new Phaser.Point(0, wLevel);
+    var point2 = new Phaser.Point(ws.width, wLevel + settings.bg_image_size);
 
     foodGenerator = new FoodGenerator(this.game, point1, point2, 50, monsterCollisionGroup, foodCollisionGroup)
     personGenerator = new PersonGenerator(this.game, 300, 340, 10000, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup);
