@@ -14,9 +14,8 @@
       this.game.stage.backgroundColor = "#CCCCCC";
       this.game.physics.startSystem(Phaser.Physics.P2JS);
       this.game.physics.p2.gravity.y = 100;
-      this.game.physics.p2.restitution = 0.1;
       this.game.physics.p2.setImpactEvents(true);
-      this.game.physics.p2.defaultRestitution = 0.8;
+      this.game.physics.p2.restitution = 0.9;
 
       monsterCollisionGroup = this.game.physics.p2.createCollisionGroup();
       foodCollisionGroup = this.game.physics.p2.createCollisionGroup();
