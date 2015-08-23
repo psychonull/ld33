@@ -15,11 +15,7 @@ var Monster = function(game, x, y, frame) {
 
   this.swimming = false;
   this.back_landing = false;
-<<<<<<< HEAD
-  this.base_speed = 500;
-=======
   this.base_speed = 300;
->>>>>>> branch 'master' of https://github.com/psychonull/ld33.git
   this.speed = this.base_speed;
   this.turn_rate = 0.1;
   this.diveFX = game.add.audio('splash', 10);

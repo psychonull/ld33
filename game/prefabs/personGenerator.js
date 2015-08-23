@@ -27,7 +27,7 @@ PersonGenerator.prototype.update = function() {
     	person.body.setRectangle(40, 40);
     	person.body.setCollisionGroup(this.personCollisionGroup);
     	person.body.collides([this.personCollisionGroup, this.monsterCollisionGroup]);
-    	person.body.collides([this.personCollisionGroup, this.bridgeLineCollisionGroup], hitBridge);
+    	person.body.collides([this.personCollisionGroup, this.bridgeLineCollisionGroup]);
     	person.body.collideWorldBounds = false;
     	this.currentQuantity += 1;
     	this.game.add.existing(person);
@@ -36,11 +36,7 @@ PersonGenerator.prototype.update = function() {
 		if(this.time > 0)
 			this.time -= 1;
 	}
-},
-hitBridge: function(person, bridge) {
-	person.sprite.alpha -= 1;
-  }
-;
+};
 
 
 
