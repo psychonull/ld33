@@ -12,11 +12,12 @@ var Monster = function(game, x, y, frame) {
   this.scale.x = 0.1;
   this.scale.y = 0.1;
 
-  this.swimming = true;
+  this.swimming = false;
 
   this.speed = 500;
   this.turn_rate = 0.1;
-  this.fx = game.add.audio('splash', 10);
+  this.diveFX = game.add.audio('splash', 10);
+  this.jumpFX = game.add.audio('roar', 15);
 
   this.game.physics.p2.enable(this, true);
   this.body.setCircle(20);
@@ -59,12 +60,19 @@ Monster.prototype.swim = function() {
 };
 
 Monster.prototype.fly = function() {
+  if (this.swimming) 
+	  this.jump();
+  
   this.swimming = false; 
   this.body.data.gravityScale = 1;
 };
 
 Monster.prototype.dive = function() {
-  this.fx.play();
+  this.diveFX.play();
+};
+
+Monster.prototype.jump = function() {
+  this.jumpFX.play();
 };
 
 module.exports = Monster;

@@ -20,7 +20,7 @@ Play.prototype = {
 
     game.add.tileSprite(0, 0, this.worldSize.width, this.worldSize.height, 'background');
     game.world.setBounds(0, 0, this.worldSize.width, this.worldSize.height);
-    this.musicTheme = game.add.audio('theme', 0.5, true);
+    this.musicTheme = game.add.audio('theme', 0.1, true);
     this.musicTheme.play();
     game.stage.backgroundColor = "#A6947B";
     game.physics.startSystem(Phaser.Physics.P2JS);
@@ -44,11 +44,23 @@ Play.prototype = {
     this.game.add.existing(this.monster);
 
 
-    var food = new Food(this.game, 100, 300);
+    var food = new Food(this.game, 300, 300);
     food.body.setRectangle(40, 40);
     food.body.setCollisionGroup(foodCollisionGroup);
     food.body.collides([foodCollisionGroup, monsterCollisionGroup]);
     this.game.add.existing(food);
+    
+    var food2 = new Food(this.game, 100, 500);
+    food2.body.setRectangle(40, 40);
+    food2.body.setCollisionGroup(foodCollisionGroup);
+    food2.body.collides([foodCollisionGroup, monsterCollisionGroup]);
+    this.game.add.existing(food2);
+    
+    var food2 = new Food(this.game, 200, 600);
+    food2.body.setRectangle(40, 40);
+    food2.body.setCollisionGroup(foodCollisionGroup);
+    food2.body.collides([foodCollisionGroup, monsterCollisionGroup]);
+    this.game.add.existing(food2);
 
     this.hud = new Hud(this.game);
     this.game.add.existing(this.hud);
@@ -60,12 +72,7 @@ Play.prototype = {
 	  
   },
   hitFood: function(monster, food) {
-    //food.exists = false;
-    //food.body = null;
-    //food.kill = true;
-    //food.destroy(true);
-    //food.removeFromWorld();
-    //food.body.destroy(true);
+	food.sprite.afterDestroyed();
     food.sprite.destroy();
     food.destroy();
   }
