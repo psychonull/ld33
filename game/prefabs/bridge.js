@@ -26,20 +26,21 @@ var Bridge = function(game, monsterGroup, personGroup, bridgeGroup) {
 	      game.physics.p2.enable(newRect, false);
 	      newRect.body.setRectangle(width, height);
 
-	      if (i === 0 || i === length || i % 5 === 0) {
+	      if (i === 0 || i === length) {
 	        newRect.body.static = true;
 	      }
 	      else {
 	        //newRect.body.velocity.y = game.physics.p2.gravity.y*-1;
-	        newRect.body.mass = 0.00001; //length;// / i;
-	        newRect.body.collides([this, monsterGroup]);
+	        newRect.body.mass = 1; //length;// / i;
+	        //newRect.body.collides([this, monsterGroup]);
+	        newRect.body.collides([this, personGroup]);
 	        newRect.body.setCollisionGroup(bridgeGroup);
 	      }
 
 	      if (lastRect) {
 	        var constraint = game.physics.p2.createRevoluteConstraint(
 	          newRect, [-width/2, height/2],
-	          lastRect, [width/3, height/2],
+	          lastRect, [width/2, height/2],
 	          maxForce);
 
 	        constraint.collideConnected = false;
@@ -48,8 +49,6 @@ var Bridge = function(game, monsterGroup, personGroup, bridgeGroup) {
 	      lastRect = newRect;
 	    }
 	  }
-
-	  this.bridge = this.game.add.sprite(xAnchor, yAnchor, 'bridge');
 };
 
 Bridge.prototype = Object.create(Phaser.Group.prototype);

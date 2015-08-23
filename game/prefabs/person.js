@@ -24,7 +24,7 @@ var Person = function(game, x, y, frame) {
   this.body.fixedRotation = true;
   this.body.velocity.x = 200;
   this.body.velocity.y = 0;  
-  this.body.kinematic = true;
+  this.body.mass = 2;
 };
 
 Person.prototype = Object.create(Phaser.Sprite.prototype);

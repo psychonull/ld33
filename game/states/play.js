@@ -49,7 +49,7 @@ Play.prototype = {
     personCollisionGroup = this.game.physics.p2.createCollisionGroup();
     this.game.physics.p2.updateBoundsCollisionGroup();
 
-    this.monster = new Monster(this.game, 200, 200);
+    this.monster = new Monster(this.game, 200, 400);
     this.monster.body.setCircle(28);
     this.monster.body.setCollisionGroup(monsterCollisionGroup);
     this.monster.body.collides(foodCollisionGroup, this.hitFood, this);
@@ -59,7 +59,7 @@ Play.prototype = {
     this.game.add.existing(this.monster);
 
     foodGenerator = new FoodGenerator(this.game, 500, 950, 100, monsterCollisionGroup, foodCollisionGroup)
-    personGenerator = new PersonGenerator(this.game, 300, 200, 10000, monsterCollisionGroup, personCollisionGroup);
+    personGenerator = new PersonGenerator(this.game, 300, 340, 10000, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup);
 
     this.water = new Water(this.game, monsterCollisionGroup, waterLineCollisionGroup);
     this.game.add.existing(this.water);

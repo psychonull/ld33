@@ -15,7 +15,7 @@ var Hud = function(game) {
   this.fixedToCamera = true;
 
   this.timer = new Cowntdown(game, {
-    value: 20 * 1000
+    value: 20000 * 1000
   });
 
   this.game.add.existing(this.timer);
