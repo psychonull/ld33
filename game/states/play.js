@@ -1,14 +1,11 @@
 
   'use strict';
-
+  var Food = require('../prefabs/Food');
   var Hud = require('../prefabs/hud.js');
-
-  function Play() {}
-
-
   var Monster = require('../prefabs/monster');
-
   var graphics;
+  
+  function Play() {}
 
   Play.prototype = {
     create: function() {
@@ -25,6 +22,9 @@
       this.monster = new Monster(this.game, 200, 200);
       this.game.add.existing(this.monster);
       this.game.physics.p2.defaultRestitution = 0.8;
+
+      var food = new Food(this.game, 100, 300);
+      this.game.add.existing(food);
 
       this.hud = new Hud(this.game);
       this.game.add.existing(this.hud);

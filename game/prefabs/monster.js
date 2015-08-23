@@ -4,7 +4,7 @@ var movement = 250;
 var cursors;
 
 var Monster = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'yeoman', frame);
+  Phaser.Sprite.call(this, game, x, y, 'Shark', frame);
   
   this.inputEnabled = true;
   
@@ -16,6 +16,7 @@ var Monster = function(game, x, y, frame) {
 
   
   this.game.physics.p2.enable(this);
+
   //this.body.velocity.x = 35;
   //this.body.velocity.y = 35;
   //this.body.kinematic = true;
