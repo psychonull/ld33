@@ -4,6 +4,7 @@ var monsterCollisionGroup;
 var personCollisionGroup;
 
 var PersonGenerator = function(game, x, y, timer, monsterCollisionGroup, personCollisionGroup) {
+	this.personCollisionGroup = game.add.group();
 	this.posX = x;
 	this.posY = y;
 	this.timer = timer;
@@ -23,6 +24,7 @@ PersonGenerator.prototype.update = function() {
     	person.body.setRectangle(40, 40);
     	person.body.setCollisionGroup(this.personCollisionGroup);
     	person.body.collides([this.personCollisionGroup, this.monsterCollisionGroup]);
+    	person.body.collideWorldBounds = false;
     	this.game.add.existing(person);
 	}
 	else{
