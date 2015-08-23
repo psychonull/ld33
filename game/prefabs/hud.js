@@ -1,14 +1,17 @@
 'use strict';
-var Bar = require('./ui/bar.js');
-var Cowntdown = require('./ui/cowntdown.js');
+
+var Bar = require('./ui/bar.js'),
+  Cowntdown = require('./ui/cowntdown.js'),
+  MuteButton = require('./ui/muteButton.js');
+
 var _ = require('lodash');
 
 var Hud = function(game) {
   Phaser.Group.call(this, game);
 
   this.bar = new Bar(this.game);
-  this.bar.x = 300;
-  this.bar.y = 10;
+  this.bar.x = 380;
+  this.bar.y = 558;
   this.game.add.existing(this.bar);
 
   this.add(this.bar);
@@ -23,6 +26,9 @@ var Hud = function(game) {
     value: 20 * 1000
   });
 
+  this.timer.x = 10;
+  this.timer.y = 560;
+
   this.game.add.existing(this.timer);
   this.add(this.timer);
 
@@ -31,6 +37,9 @@ var Hud = function(game) {
     this.game.state.start('gameover');
   }, this));
 
+  this.muteButton = new MuteButton(this.game, 200, 554);
+  this.game.add.existing(this.muteButton);
+  this.add(this.muteButton);
 };
 
 Hud.prototype = Object.create(Phaser.Group.prototype);
