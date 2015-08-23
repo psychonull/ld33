@@ -55,8 +55,9 @@ Play.prototype = {
     this.monster.body.collides(personCollisionGroup, this.hitPerson, this);
     this.game.add.existing(this.monster);
 
-    foodGenerator = new FoodGenerator(this.game, 500, 950, 100, monsterCollisionGroup, foodCollisionGroup)
-    personGenerator = new PersonGenerator(this.game, 300, 200, 10000, monsterCollisionGroup, personCollisionGroup);
+    foodGenerator = new FoodGenerator(this.game, 500, 950, 50, monsterCollisionGroup, foodCollisionGroup)
+    personGenerator = new PersonGenerator(this.game, 300, 200, monsterCollisionGroup, personCollisionGroup);
+    personGenerator.createPersons(1, 1);
 
     this.water = new Water(this.game, monsterCollisionGroup, waterLineCollisionGroup);
     this.game.add.existing(this.water);
@@ -74,7 +75,7 @@ Play.prototype = {
   hitFood: function(monster, food) {
     foodGenerator.dicreaseCurrentFood();
     monster.sprite.speed += 100;
-	  food.sprite.afterDestroyed();
+    food.sprite.afterDestroyed();
     food.sprite.destroy();
     food.destroy();
   },
@@ -82,10 +83,14 @@ Play.prototype = {
     //this.water.splash(water);
   },
   hitPerson: function(monster, person) {
-	  person.sprite.afterDestroyed();
-	  person.sprite.destroy();
-	  person.destroy();
-    this.game.state.start('win');
+	person.sprite.afterDestroyed();
+	person.sprite.destroy();
+    person.destroy();
+    this.hud.setTimer(20);
+    personGenerator.createPersons(1, 100);
+    monster.sprite.scale.x += 0.01;
+    monster.sprite.scale.y += 0.01;
+    //this.game.state.start('win');
   }
 };
 

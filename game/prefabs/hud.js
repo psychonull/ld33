@@ -40,4 +40,8 @@ Hud.prototype.update = function() {
   this.timer.update();
 };
 
+Hud.prototype.setTimer = function(value) {
+  this.timer.value += value * 1000;//this.timer.update();
+};
+
 module.exports = Hud;
