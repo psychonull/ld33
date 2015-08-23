@@ -4,10 +4,12 @@ var FoodGenerator = require('../prefabs/foodGenerator');
 var Food = require('../prefabs/Food');
 var Hud = require('../prefabs/hud.js');
 var Monster = require('../prefabs/monster');
+var Water = require('../prefabs/water');
 var settings = require('../settings');
 var graphics;
 var monsterCollisionGroup;
 var foodCollisionGroup;
+var waterLineCollisionGroup;
 var foodGenerator;
 
 function Play() {  
@@ -30,6 +32,7 @@ Play.prototype = {
 
     monsterCollisionGroup = this.game.physics.p2.createCollisionGroup();
     foodCollisionGroup = this.game.physics.p2.createCollisionGroup();
+    waterLineCollisionGroup = this.game.physics.p2.createCollisionGroup();
     this.game.physics.p2.updateBoundsCollisionGroup();
 
     graphics = this.game.add.graphics(0, 0);
@@ -41,6 +44,7 @@ Play.prototype = {
     this.monster.body.setCircle(28);
     this.monster.body.setCollisionGroup(monsterCollisionGroup);
     this.monster.body.collides(foodCollisionGroup, this.hitFood, this);
+    this.monster.body.collides(waterLineCollisionGroup, this.hitWater, this);
     this.game.add.existing(this.monster);
 
     foodGenerator = new FoodGenerator(this.game, 200, 700, 100, monsterCollisionGroup, foodCollisionGroup)
@@ -49,6 +53,9 @@ Play.prototype = {
     //food.body.setCollisionGroup(foodCollisionGroup);
     //food.body.collides([foodCollisionGroup, monsterCollisionGroup]);
     //this.game.add.existing(food);
+
+    this.water = new Water(this.game, monsterCollisionGroup, waterLineCollisionGroup);
+    this.game.add.existing(this.water);
 
     this.hud = new Hud(this.game);
     this.game.add.existing(this.hud);
@@ -62,6 +69,11 @@ Play.prototype = {
   hitFood: function(monster, food) {
     food.sprite.destroy();
     food.destroy();
+  },
+  hitWater: function(monster, water) {
+    //food.sprite.destroy();
+    //food.destroy();
+    console.log('COLLIDE');
   }
 };
 

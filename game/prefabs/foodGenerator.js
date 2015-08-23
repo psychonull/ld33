@@ -16,11 +16,13 @@ FoodGenerator.prototype.update = function() {
 	if (this.time == 0){
 		var position = this.rdn(this.point,300);
 		this.time = this.timer;
+    /*
 		var food = new Food(this.game, position.x, position.y);
     	food.body.setRectangle(40, 40);
     	food.body.setCollisionGroup(this.foodCollisionGroup);
     	food.body.collides([this.foodCollisionGroup, this.monsterCollisionGroup]);
     	this.game.add.existing(food);
+    */
 	}
 	else{
 		this.time -= 1;

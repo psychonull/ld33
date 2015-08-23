@@ -14,6 +14,8 @@ Preload.prototype = {
     this.load.setPreloadSprite(this.asset);
     this.load.image('Food', 'assets/Food.png');
     this.load.image('Shark', 'assets/Shark.png');
+    this.load.image('chain', 'assets/chain.png');
+    this.load.image('water', 'assets/water.png');
 
     this.load.bitmapFont('ka', 'assets/fonts/ka.png', 'assets/fonts/ka.fnt');
     this.load.bitmapFont('arcade', 'assets/fonts/arcade.png', 'assets/fonts/arcade.fnt');
