@@ -75,7 +75,7 @@ Food.prototype.update = function() {
 	else if (this.x >= this.originalX + 50)
 		this.body.force.x = -100;
 	if (this.y >= settings.worldSize.height - 50)
-		this.destroy();
+		return this.destroy();
 
   if(this.glow){
     this.updateLighting();
