@@ -8,20 +8,21 @@ var Water = function(game, monsterGroup, waterGroup) {
   var maxWidth = settings.worldSize.width;
 
   var lastRect;
-  var height = 10;        //  Height for the physics body - your image height is 8px
-  var width = 10;         //  This is the width for the physics body. If too small the rectangles will get scrambled together.
+  var lines = 1;
+  var height = 20;        //  Height for the physics body - your image height is 8px
+  var width = 30;         //  This is the width for the physics body. If too small the rectangles will get scrambled together.
   var maxForce = 20000;   //  The force that holds the rectangles together.
   var newRect;
 
   var length = Math.floor(maxWidth/width),
-    xAnchor = 0, yAnchor = 550;
+    xAnchor = 0, yAnchor = 570;
 
-  for (var j = 0; j <= 1; j++) {
+  for (var j = 0; j < lines; j++) {
     for (var i = 0; i <= length; i++) {
       var x = xAnchor + (i * width);
       var y = yAnchor + (j*10);
 
-      newRect = game.add.sprite(x, y, 'chain', 0);
+      newRect = game.add.sprite(x, y, 'water', 0);
 
       game.physics.p2.enable(newRect, false);
       newRect.body.setRectangle(width, height);
@@ -37,7 +38,11 @@ var Water = function(game, monsterGroup, waterGroup) {
       }
 
       if (lastRect) {
-        var constraint = game.physics.p2.createRevoluteConstraint(newRect, [0, height/2], lastRect, [width, height/2], maxForce);
+        var constraint = game.physics.p2.createRevoluteConstraint(
+          newRect, [-width/2, height/2],
+          lastRect, [width/3, height/2],
+          maxForce);
+
         constraint.collideConnected = false;
       }
 
@@ -45,7 +50,7 @@ var Water = function(game, monsterGroup, waterGroup) {
     }
   }
 
-  this.water = this.game.add.sprite(0, 550, 'water');
+  this.water = this.game.add.sprite(xAnchor, yAnchor, 'water');
 
 };
 

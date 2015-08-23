@@ -26,7 +26,8 @@ FoodGenerator.prototype.update = function() {
     	this.currentFood += 1;
 	}
 	else{
-		this.time -= 1;
+		if(this.time > 0)
+			this.time -= 1;
 	}
 };
 
