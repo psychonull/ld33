@@ -52,7 +52,8 @@ Play.prototype = {
 	  foodGenerator.update();
   },
   hitFood: function(monster, food) {
-	food.sprite.afterDestroyed();
+    monster.sprite.speed += 100;
+	  food.sprite.afterDestroyed();
     food.sprite.destroy();
     food.destroy();
   }
