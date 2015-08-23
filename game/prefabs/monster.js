@@ -56,8 +56,6 @@ Monster.prototype.update = function() {
     //this.back_landing = false;
   }
 
-  console.log(this.body.velocity);
-
   /*var dt = this.game.time.getElapsedTime();
   this.stime -= dt *1000;
   if(this.stime<=0){
