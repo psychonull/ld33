@@ -3,17 +3,18 @@
 var movement = 250;
 var cursors;
 
+
 var Monster = function(game, x, y, frame) {
   Phaser.Sprite.call(this, game, x, y, 'Shark', frame);
   
   this.inputEnabled = true;
-  
+
   this.scale.x = 0.1;
   this.scale.y = 0.1;
-
+  this.swimming = true;
   this.SPEED = 500;
   this.TURN_RATE = 100;
-
+  this.fx = game.add.audio('splash');
   
   this.game.physics.p2.enable(this, true);
   this.body.setCircle(20);
@@ -31,10 +32,17 @@ Monster.prototype.constructor = Monster;
 
 Monster.prototype.update = function() {
   //this.sprite.body.setZeroVelocity();
-  if (this.position.y > 300)
+  if (this.position.y > 300){
     this.body.data.gravityScale = -0.2;
-  else
+    if (!this.swimming){
+    	this.fx.play();
+    	this.swimming = true;
+    }
+  }
+  else{
+	this.swimming = false;
     this.body.data.gravityScale = 1;
+  }
 
   if (cursors.left.isDown)
     {
