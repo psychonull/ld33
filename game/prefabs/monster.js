@@ -4,7 +4,7 @@ var movement = 205;
 var cursors;
 
 var Monster = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'yeoman', frame);
+  Phaser.Sprite.call(this, game, x, y, 'Shark', frame);
   
   this.inputEnabled = true;
   
@@ -12,6 +12,7 @@ var Monster = function(game, x, y, frame) {
   this.scale.y = 0.2;
   
   this.game.physics.p2.enable(this);
+
   //this.body.velocity.x = 35;
   //this.body.velocity.y = 35;
   cursors = this.game.input.keyboard.createCursorKeys();
