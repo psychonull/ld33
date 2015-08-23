@@ -16,8 +16,8 @@ var Monster = function(game, x, y, frame) {
   this.back_landing = false;
   this.speed = 500;
   this.turn_rate = 0.1;
-  this.fx = game.add.audio('splash');
-  
+  this.fx = game.add.audio('splash', 10);
+
   this.game.physics.p2.enable(this, true);
   this.body.setCircle(20);
   this.anchor.set(0.7,0.5);
