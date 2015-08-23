@@ -2,7 +2,7 @@
  
 var movement = 250;
 var cursors;
-
+var settings = require('../settings');
 
 var Monster = function(game, x, y, frame) {
   Phaser.Sprite.call(this, game, x, y, 'Shark', frame);
@@ -29,7 +29,8 @@ Monster.prototype = Object.create(Phaser.Sprite.prototype);
 Monster.prototype.constructor = Monster;
 
 Monster.prototype.update = function() {  
-  if (this.position.y > 300){
+
+  if (this.position.y > settings.water_level){
     this.swim();
   }
   else{
