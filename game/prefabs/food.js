@@ -19,6 +19,7 @@ var Food = function(game, x, y, options) {
   this.width = 32;
   this.height = 32;
 
+  this.scale.setTo(0.7, 0.7);
 
   this.inputEnabled = true;
 
@@ -92,7 +93,7 @@ Food.prototype.setupLighting = function(){
 
   this.glow.min = this.game.rnd.realInRange(0.87, 0.92);
   this.glow.max = this.game.rnd.realInRange(0.98,1.02);
-
+  this.glow.baseScale = this.game.rnd.realInRange(0.65, 0.9);
 };
 
 Food.prototype.setupBehavior = function(){
@@ -106,7 +107,7 @@ Food.prototype.updateLighting = function(){
   this.glow.x = this.x;
   this.glow.y = this.y;
 
-  var size = this.game.rnd.realInRange(this.glow.min, this.glow.max);
+  var size = this.game.rnd.realInRange(this.glow.min * this.glow.baseScale, this.glow.max * this.glow.baseScale);
   this.glow.scale.setTo(size, size);
 };
 
