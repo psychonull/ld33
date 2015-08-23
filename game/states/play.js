@@ -24,6 +24,7 @@ Play.prototype = {
     var game = this.game;
     var ws = settings.worldSize;
 
+    game.onSpeedChange = new Phaser.Signal();
 
     game.add.tileSprite(0, 0, ws.width, ws.height, 'background');
     game.world.setBounds(0, 0, ws.width, ws.height);

@@ -4,9 +4,10 @@ var movement = 250;
 var cursors;
 var settings = require('../settings');
 
+
 var Monster = function(game, x, y, frame) {
   Phaser.Sprite.call(this, game, x, y, 'Shark', frame);
-  
+  this.maxSpeed = 1000;
   this.inputEnabled = true;
 
   this.scale.x = 0.1;
@@ -101,6 +102,8 @@ Monster.prototype.updateVelocity = function() {
     this.speed += 10;
   else
     this.speed -= 5;
+
+  this.game.onSpeedChange.dispatch(this.speed/this.maxSpeed);
 };
 
 Monster.prototype.jump = function() {
