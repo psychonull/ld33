@@ -41,12 +41,7 @@ Play.prototype = {
     waterLineCollisionGroup = this.game.physics.p2.createCollisionGroup();
     personCollisionGroup = this.game.physics.p2.createCollisionGroup();
     this.game.physics.p2.updateBoundsCollisionGroup();
-
-    graphics = this.game.add.graphics(0, 0);
-    graphics.lineStyle(10, 0x33FF00);
-    graphics.moveTo(0,300);
-    graphics.lineTo(800, 300);
-
+   
     this.monster = new Monster(this.game, 200, 200);
     this.monster.body.setCircle(28);
     this.monster.body.setCollisionGroup(monsterCollisionGroup);

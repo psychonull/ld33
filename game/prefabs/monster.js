@@ -69,12 +69,25 @@ Monster.prototype.swim = function() {
       this.dive();
 
   this.swimming = true;
-  this.body.data.gravityScale = -0.1;
+  this.body.data.gravityScale = -0.5;
 
   if (!this.back_landing){
     this.body.velocity.x = Math.cos(this.rotation) * this.speed;
     this.body.velocity.y = Math.sin(this.rotation) * this.speed;
   }
+
+
+  console.log(this.body.velocity.y);
+};
+
+Monster.prototype.updateVelocity = function() {
+  if (this.speed >= 0)
+    this.back_landing = false;
+
+  if (this.speed < this.base_speed)
+    this.speed += 10;
+  else
+    this.speed -= 5;
 };
 
 Monster.prototype.fly = function() {
@@ -88,19 +101,9 @@ Monster.prototype.fly = function() {
 Monster.prototype.dive = function() {
   this.diveFX.play();
   if (this.angle < 0){
-    this.back_landing = true
-    this.speed = 0; 
+    this.back_landing = true;
+    this.speed = 0;    
   }
-};
-
-Monster.prototype.updateVelocity = function() {
-  if (this.speed >= 100)
-    this.back_landing = false;
-
-  if (this.speed < this.base_speed)
-    this.speed += 10;
-  else
-    this.speed -= 5;
 };
 
 Monster.prototype.jump = function() {
