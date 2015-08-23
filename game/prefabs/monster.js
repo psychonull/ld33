@@ -5,12 +5,12 @@ var cursors;
 var settings = require('../settings');
 
 var Monster = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'Shark', frame);
+  Phaser.Sprite.call(this, game, x, y, 'monster', frame);
   
   this.inputEnabled = true;
 
-  this.scale.x = 0.1;
-  this.scale.y = 0.1;
+  this.scale.x = 0.4;
+  this.scale.y = 0.4;
 
   this.swimming = false;
   this.back_landing = false;
