@@ -1,8 +1,8 @@
 
 'use strict';
-function GameOver() {}
+function Win() {}
 
-GameOver.prototype = {
+Win.prototype = {
   preload: function () {
 
   },
@@ -11,7 +11,7 @@ GameOver.prototype = {
     this.titleText = this.game.add.text(400,100, 'Game Over!', style);
     this.titleText.anchor.setTo(0.5, 0.5);
 
-    this.congratsText = this.game.add.text(400, 200, 'You Lose', { font: '32px Arial', fill: '#ffffff', align: 'center'});
+    this.congratsText = this.game.add.text(400, 200, 'You Win!', { font: '32px Arial', fill: '#ffffff', align: 'center'});
     this.congratsText.anchor.setTo(0.5, 0.5);
 
     this.instructionText = this.game.add.text(400, 300, 'Click To Play Again', { font: '16px Arial', fill: '#ffffff', align: 'center'});
@@ -23,4 +23,4 @@ GameOver.prototype = {
     }
   }
 };
-module.exports = GameOver;
+module.exports = Win;

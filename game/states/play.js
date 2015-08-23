@@ -81,10 +81,10 @@ Play.prototype = {
     //this.water.splash(water);
   },
   hitPerson: function(monster, person) {
-    person.sprite.afterDestroyed();
-    person.sprite.destroy();
-    person.destroy();
-    this.game.state.start('gameover');
+	  person.sprite.afterDestroyed();
+	  person.sprite.destroy();
+	  person.destroy();
+    this.game.state.start('win');
   }
 };
 
