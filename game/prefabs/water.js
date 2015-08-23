@@ -1,9 +1,11 @@
 'use strict';
 
+var settings = require('../settings');
+
 var Water = function(game, monsterGroup, waterGroup) {
   Phaser.Group.call(this, game);
 
-  var maxWidth = 1920;
+  var maxWidth = settings.worldSize.width;
 
   var lastRect;
   var height = 10;        //  Height for the physics body - your image height is 8px
