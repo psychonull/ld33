@@ -11,73 +11,59 @@ var Monster = function(game, x, y, frame) {
 
   this.scale.x = 0.1;
   this.scale.y = 0.1;
+
   this.swimming = true;
-  this.SPEED = 500;
-  this.TURN_RATE = 100;
+  this.speed = 500;
+  this.turn_rate = 0.1;
   this.fx = game.add.audio('splash');
   
   this.game.physics.p2.enable(this, true);
   this.body.setCircle(20);
   this.anchor.set(0.7,0.5);
-
   
-  //this.body.velocity.x = 35;
-  //this.body.velocity.y = 35;
-  //this.body.kinematic = true;
   cursors = this.game.input.keyboard.createCursorKeys();
 };
 
 Monster.prototype = Object.create(Phaser.Sprite.prototype);
 Monster.prototype.constructor = Monster;
 
-Monster.prototype.update = function() {
-  //this.sprite.body.setZeroVelocity();
+Monster.prototype.update = function() {  
   if (this.position.y > 300){
-    this.body.data.gravityScale = -0.2;
-    if (!this.swimming){
-    	this.fx.play();
-    	this.swimming = true;
-    }
+    this.swim();
   }
   else{
-	this.swimming = false;
-    this.body.data.gravityScale = 1;
+    this.fly();
   }
 
   if (cursors.left.isDown)
     {
-      //this.body.angle -= 5;
-      this.body.rotation -= 0.1;
+      this.body.rotation -= this.turn_rate;
       this.body.angularVelocity = 0;
-      //this.body.rotateLeft(this.TURN_RATE);
-      //this.body.moveLeft(movement);
     }
     else if (cursors.right.isDown)
     {
-      this.body.rotation += 0.1;
+      this.body.rotation += this.turn_rate;
       this.body.angularVelocity = 0;
-      //this.body.angle += 5;
-      //this.body.rotateRight(this.TURN_RATE);
-      //this.body.moveRight(movement);
-    }
+    }  
+};
 
-  if (this.position.y > 300){
-    
+Monster.prototype.swim = function() {
+  if (!this.swimming)
+      this.dive();
 
-    if (cursors.up.isDown)
-    {
-      //this.body.thrust(400);
-      //this.body.moveUp(movement);
-    }
-    else if (cursors.down.isDown)
-    {
-      //this.body.moveDown(movement);
-    }
- 
-    this.body.velocity.x = Math.cos(this.rotation) * this.SPEED;
-    this.body.velocity.y = Math.sin(this.rotation) * this.SPEED;
-    }
-  
+  this.swimming = true;
+  this.body.data.gravityScale = -0.2;
+  this.body.velocity.x = Math.cos(this.rotation) * this.speed;
+  this.body.velocity.y = Math.sin(this.rotation) * this.speed;
+};
+
+Monster.prototype.fly = function() {
+  this.swimming = false; 
+  this.body.data.gravityScale = 1;
+};
+
+Monster.prototype.dive = function() {
+  this.fx.play();
 };
 
 module.exports = Monster;
