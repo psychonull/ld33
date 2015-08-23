@@ -9,20 +9,20 @@ var Water = function(game, monsterGroup, waterGroup) {
 
   var lastRect;
   var lines = 1;
-  var height = 20;        //  Height for the physics body - your image height is 8px
-  var width = 30;         //  This is the width for the physics body. If too small the rectangles will get scrambled together.
-  var maxForce = 20000;   //  The force that holds the rectangles together.
+  var height = 20;
+  var width = 30;
+  var maxForce = 20000;
   var newRect;
 
   var length = Math.floor(maxWidth/width),
-    xAnchor = 0, yAnchor = 570;
+    xAnchor = 0, yAnchor = settings.water_level;
 
   for (var j = 0; j < lines; j++) {
     for (var i = 0; i <= length; i++) {
       var x = xAnchor + (i * width);
       var y = yAnchor + (j*10);
 
-      newRect = game.add.sprite(x, y, 'water', 0);
+      newRect = game.add.sprite(x, y, 'water_blob', 0);
 
       game.physics.p2.enable(newRect, false);
       newRect.body.setRectangle(width, height);
@@ -31,8 +31,7 @@ var Water = function(game, monsterGroup, waterGroup) {
         newRect.body.static = true;
       }
       else {
-        //newRect.body.velocity.y = game.physics.p2.gravity.y*-1;
-        newRect.body.mass = 0.00001; //length;// / i;
+        newRect.body.mass = 0.00001;
         newRect.body.collides([this, monsterGroup]);
         newRect.body.setCollisionGroup(waterGroup);
       }
@@ -50,7 +49,7 @@ var Water = function(game, monsterGroup, waterGroup) {
     }
   }
 
-  this.water = this.game.add.sprite(xAnchor, yAnchor, 'water');
+  //this.water = this.game.add.sprite(xAnchor, yAnchor, 'water');
 
 };
 
@@ -59,6 +58,16 @@ Water.prototype.constructor = Water;
 
 Water.prototype.update = function() {
 
+};
+
+Water.prototype.splash = function(waterHit){
+  this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+  var emitter = this.game.add.emitter(waterHit.x, waterHit.y);
+  emitter.bounce.setTo(0.5, 0.5);
+  emitter.setXSpeed(-100, 100);
+  emitter.setYSpeed(50, -100);
+  emitter.makeParticles('water', 0, 250, 1, true);
 };
 
 module.exports = Water;

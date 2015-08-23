@@ -1,4 +1,5 @@
 'use strict';
+
 var Bar = require('./ui/bar.js'),
   Cowntdown = require('./ui/cowntdown.js'),
   MuteButton = require('./ui/muteButton.js');
@@ -15,6 +16,11 @@ var Hud = function(game) {
 
   this.add(this.bar);
   this.fixedToCamera = true;
+
+
+  this.game.onSpeedChange.add(_.bind(function(val){
+  	this.bar.setValue(val);
+  }, this));
 
   this.timer = new Cowntdown(game, {
     value: 20 * 1000
@@ -37,7 +43,6 @@ Hud.prototype = Object.create(Phaser.Group.prototype);
 Hud.prototype.constructor = Hud;
 
 Hud.prototype.update = function() {
-  this.bar.setValue(this.bar.value - 0.001);
   this.timer.update();
 };
 
