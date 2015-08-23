@@ -6,7 +6,7 @@ var foodCollisionGroup;
 
 var FoodGenerator = function(game, point1, point2, timer, monsterCollisionGroup, foodCollisionGroup) {
 	this.point1 = point1;
-	this.point2 = point2; //new Phaser.Point(x, y);
+	this.point2 = point2;
 	this.timer = timer;
 	this.game = game;
 	this.monsterCollisionGroup = monsterCollisionGroup;
@@ -18,9 +18,8 @@ var FoodGenerator = function(game, point1, point2, timer, monsterCollisionGroup,
 
 FoodGenerator.prototype.update = function() {
 	if (this.time == 0 && this.currentFood <= this.maxFood){
-		var x = this.randomIntFromInterval(this.point1.x, this.point2.x); //this.rdn(this.point,300);
-		var y = this.randomIntFromInterval(this.point1.y, this.point2.y);
-		//var random = Math.floor(Math.random() * 950);
+		var x = this.randomIntFromInterval(this.point1.x, this.point2.x);
+		var y = this.randomIntFromInterval(this.point1.y, this.point2.y);		
 		this.time = this.timer;
 		var food = new Food(this.game, x, y);
     	food.body.setRectangle(40, 40);

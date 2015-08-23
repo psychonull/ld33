@@ -66,8 +66,7 @@ Monster.prototype.swim = function() {
   if (!this.back_landing){
     this.body.velocity.x = Math.cos(this.rotation) * this.speed;
     this.body.velocity.y = Math.sin(this.rotation) * this.speed;
-  }
-  console.log(this.body.velocity.y);
+  }  
 };
 
 Monster.prototype.updateVelocity = function() {
