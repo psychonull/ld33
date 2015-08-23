@@ -5,7 +5,6 @@ var monsterCollisionGroup;
 var foodCollisionGroup;
 
 var FoodGenerator = function(game, x, y, timer, monsterCollisionGroup, foodCollisionGroup) {
-	//this.point = new Phaser.Point(x, y);
 	this.timer = timer;
 	this.game = game;
 	this.monsterCollisionGroup = monsterCollisionGroup;
@@ -17,7 +16,6 @@ var FoodGenerator = function(game, x, y, timer, monsterCollisionGroup, foodColli
 
 FoodGenerator.prototype.update = function() {
 	if (this.time == 0 && this.currentFood <= this.maxFood){
-		//var position = this.rdn(this.point,300);
 		var random = Math.floor(Math.random() * 1600) + 1;
 		this.time = this.timer;
 		var food = new Food(this.game, random, settings.water_level+50);
