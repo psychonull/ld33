@@ -3,7 +3,7 @@ var Person = require('../prefabs/person');
 var monsterCollisionGroup;
 var personCollisionGroup;
 
-var PersonGenerator = function(game, x, y, monsterCollisionGroup, personCollisionGroup) {
+var PersonGenerator = function(game, x, y, timer, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup) {
 	this.personCollisionGroup = game.add.group();
 	this.posX = x;
 	this.posY = y;
@@ -11,6 +11,7 @@ var PersonGenerator = function(game, x, y, monsterCollisionGroup, personCollisio
 	this.game = game;
 	this.monsterCollisionGroup = monsterCollisionGroup;
 	this.personCollisionGroup = personCollisionGroup;
+	this.bridgeLineCollisionGroup = bridgeLineCollisionGroup
 	this.time = 0;
 	this.quantity = 0;
 	this.currentQuantity = 0;
@@ -26,6 +27,7 @@ PersonGenerator.prototype.update = function() {
     	person.body.setRectangle(40, 40);
     	person.body.setCollisionGroup(this.personCollisionGroup);
     	person.body.collides([this.personCollisionGroup, this.monsterCollisionGroup]);
+    	person.body.collides([this.personCollisionGroup, this.bridgeLineCollisionGroup]);
     	person.body.collideWorldBounds = false;
     	this.currentQuantity += 1;
     	this.game.add.existing(person);
@@ -35,6 +37,9 @@ PersonGenerator.prototype.update = function() {
 			this.time -= 1;
 	}
 };
+
+
+
 
 PersonGenerator.prototype.createPersons = function(quantity, timer){
 	this.timer = timer;

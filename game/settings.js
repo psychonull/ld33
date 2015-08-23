@@ -3,5 +3,10 @@ module.exports = {
     width: 1000,
   	height: 1920
   },
-  water_level: 850
+  gravity: 400;
+  water_level: 850,
+  bg_image_size: 1400,
+  monster_base_speed: 200,
+  monster_max_speed: 1000
+
 };

@@ -6,16 +6,16 @@ var settings = require('../settings');
 
 
 var Monster = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'Shark', frame);
-  this.maxSpeed = 1000;
+  Phaser.Sprite.call(this, game, x, y, 'monster', frame);
+  this.maxSpeed = settings.monster_max_speed;
   this.inputEnabled = true;
 
-  this.scale.x = 0.1;
-  this.scale.y = 0.1;
+  this.scale.x = 0.4;
+  this.scale.y = 0.4;
 
   this.swimming = false;
   this.back_landing = false;
-  this.base_speed = 300;
+  this.base_speed = settings.monster_base_speed;
   this.speed = this.base_speed;
   this.turn_rate = 0.1;
   this.diveFX = game.add.audio('splash', 10);
@@ -23,7 +23,7 @@ var Monster = function(game, x, y, frame) {
 
   game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.updateVelocity.bind(this));  
 
-  this.game.physics.p2.enable(this, true);
+  this.game.physics.p2.enable(this, false);
   this.body.setCircle(20);
   this.anchor.set(0.7,0.5);
 
