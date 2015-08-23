@@ -20,7 +20,8 @@ Play.prototype = {
 
     game.add.tileSprite(0, 0, this.worldSize.width, this.worldSize.height, 'background');
     game.world.setBounds(0, 0, this.worldSize.width, this.worldSize.height);
-
+    this.musicTheme = game.add.audio('theme', 0.5, true);
+    this.musicTheme.play();
     game.stage.backgroundColor = "#A6947B";
     game.physics.startSystem(Phaser.Physics.P2JS);
     game.physics.p2.gravity.y = 400;
@@ -56,7 +57,7 @@ Play.prototype = {
 
   },
   update: function() {
-
+	  
   },
   hitFood: function(monster, food) {
     //food.exists = false;
