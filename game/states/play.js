@@ -1,14 +1,18 @@
 'use strict';
 
 var FoodGenerator = require('../prefabs/foodGenerator');
-var Food = require('../prefabs/Food');
+var PersonGenerator = require('../prefabs/personGenerator');
+var Food = require('../prefabs/food');
+var Person = require('../prefabs/person');
 var Hud = require('../prefabs/hud.js');
 var Monster = require('../prefabs/monster');
 var settings = require('../settings');
 var graphics;
 var monsterCollisionGroup;
+var personCollisionGroup;
 var foodCollisionGroup;
 var foodGenerator;
+var personGenerator;
 
 function Play() {  
 }
@@ -32,16 +36,19 @@ Play.prototype = {
 
     monsterCollisionGroup = this.game.physics.p2.createCollisionGroup();
     foodCollisionGroup = this.game.physics.p2.createCollisionGroup();
-    this.game.physics.p2.updateBoundsCollisionGroup();
+    personCollisionGroup = this.game.physics.p2.createCollisionGroup();
+    this.game.physics.p2.updateBoundsCollisionGroup();    
 
     this.monster = new Monster(this.game, 200, 200);
     this.monster.body.setCircle(28);
     this.monster.body.setCollisionGroup(monsterCollisionGroup);
     this.monster.body.collides(foodCollisionGroup, this.hitFood, this);
+    this.monster.body.collides(personCollisionGroup, this.hitPerson, this);
     this.game.add.existing(this.monster);
 
-    foodGenerator = new FoodGenerator(this.game, 200, 700, 100, monsterCollisionGroup, foodCollisionGroup)
-
+    foodGenerator = new FoodGenerator(this.game, 200, 700, 100, monsterCollisionGroup, foodCollisionGroup);
+    personGenerator = new PersonGenerator(this.game, 300, 200, 100, monsterCollisionGroup, personCollisionGroup);
+    
     this.hud = new Hud(this.game);
     this.game.add.existing(this.hud);
 
@@ -50,12 +57,18 @@ Play.prototype = {
   },
   update: function() {
 	  foodGenerator.update();
+	  personGenerator.update();
   },
   hitFood: function(monster, food) {
 	food.sprite.afterDestroyed();
     food.sprite.destroy();
     food.destroy();
-  }
+  },
+  hitPerson: function(monster, person) {
+	  person.sprite.afterDestroyed();
+	  person.sprite.destroy();
+	  person.destroy();
+	  }
 };
 
 module.exports = Play;

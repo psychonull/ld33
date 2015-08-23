@@ -1,5 +1,5 @@
 'use strict';
-var Food = require('../prefabs/Food');
+var Food = require('../prefabs/food');
 var monsterCollisionGroup;
 var foodCollisionGroup;
 
@@ -25,8 +25,6 @@ FoodGenerator.prototype.update = function() {
 	else{
 		this.time -= 1;
 	}
-  // write your prefab's specific update code here
-  
 };
 
 FoodGenerator.prototype.rdn = function(p, radius){ // random point whithin a circle ( p= { x: Number, y: Number } ) 

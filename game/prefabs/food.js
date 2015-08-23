@@ -1,7 +1,7 @@
 'use strict';
 
 var Food = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'Food', frame);
+  Phaser.Sprite.call(this, game, x, y, tank(), frame);
   
   this.x = x;
   this.y = y;
@@ -16,9 +16,9 @@ var Food = function(game, x, y, frame) {
   
   game.physics.p2.enable(this);
 
-  this.screamFX1 = game.add.audio('scream1', 10);
-  this.screamFX2 = game.add.audio('scream2', 10);
-  this.screamFX3 = game.add.audio('scream3', 10);
+  this.screamFX1 = game.add.audio('tankEated1', 10);
+  this.screamFX2 = game.add.audio('tankEated2', 10);
+  this.screamFX3 = game.add.audio('tankEated3', 10);
   
   this.body.setZeroDamping();
   this.body.fixedRotation = true;
@@ -40,6 +40,19 @@ Food.prototype.afterDestroyed = function(){
 				break;
 	};
 };
+
+function tank() {
+	var random = Math.floor(Math.random() * 3) + 1;
+	  switch (random){
+	  	case 1: return 'tank1';
+			break;
+	  	case 2: return 'tank2';
+			break;
+	  	case 3: return 'tank3';
+			break;
+	  
+	  }
+}
 
 Food.prototype.update = function() {
 	
