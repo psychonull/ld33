@@ -1,6 +1,8 @@
 'use strict';
 var Bar = require('./ui/bar.js'),
-  Cowntdown = require('./ui/cowntdown.js');
+  Cowntdown = require('./ui/cowntdown.js'),
+  MuteButton = require('./ui/muteButton.js');
+
 var _ = require('lodash');
 
 var Hud = function(game) {
@@ -26,6 +28,9 @@ var Hud = function(game) {
     this.game.state.start('gameover');
   }, this));
 
+  this.muteButton = new MuteButton(this.game, 200, 0);
+  this.game.add.existing(this.muteButton);
+  this.add(this.muteButton);
 };
 
 Hud.prototype = Object.create(Phaser.Group.prototype);
