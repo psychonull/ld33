@@ -29,6 +29,7 @@ PersonGenerator.prototype.update = function() {
     	person.body.collides([this.personCollisionGroup, this.monsterCollisionGroup]);
     	person.body.collides([this.personCollisionGroup, this.bridgeLineCollisionGroup]);
     	person.body.collideWorldBounds = false;
+    	this.game.camera.follow(person);
     	this.currentQuantity += 1;
     	this.game.add.existing(person);
 	}
