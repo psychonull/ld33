@@ -1,5 +1,6 @@
 'use strict';
 
+var FoodGenerator = require('../prefabs/foodGenerator');
 var Food = require('../prefabs/Food');
 var Hud = require('../prefabs/hud.js');
 var Monster = require('../prefabs/monster');
@@ -7,6 +8,7 @@ var settings = require('../settings');
 var graphics;
 var monsterCollisionGroup;
 var foodCollisionGroup;
+var foodGenerator;
 
 function Play() {  
 }
@@ -16,10 +18,12 @@ Play.prototype = {
     var game = this.game;
     var ws = settings.worldSize;
 
+
     game.add.tileSprite(0, 0, ws.width, ws.height, 'background');
     game.world.setBounds(0, 0, ws.width, ws.height);
     this.musicTheme = game.add.audio('theme', 0.5, true);
-    //this.musicTheme.play();
+    this.musicTheme.play();
+
     game.stage.backgroundColor = "#A6947B";
     game.physics.startSystem(Phaser.Physics.P2JS);
     game.physics.p2.gravity.y = 400;
@@ -36,12 +40,7 @@ Play.prototype = {
     this.monster.body.collides(foodCollisionGroup, this.hitFood, this);
     this.game.add.existing(this.monster);
 
-
-    var food = new Food(this.game, 100, 300);
-    food.body.setRectangle(40, 40);
-    food.body.setCollisionGroup(foodCollisionGroup);
-    food.body.collides([foodCollisionGroup, monsterCollisionGroup]);
-    this.game.add.existing(food);
+    foodGenerator = new FoodGenerator(this.game, 200, 700, 100, monsterCollisionGroup, foodCollisionGroup)
 
     this.hud = new Hud(this.game);
     this.game.add.existing(this.hud);
@@ -50,15 +49,10 @@ Play.prototype = {
 
   },
   update: function() {
-	  
+	  foodGenerator.update();
   },
   hitFood: function(monster, food) {
-    //food.exists = false;
-    //food.body = null;
-    //food.kill = true;
-    //food.destroy(true);
-    //food.removeFromWorld();
-    //food.body.destroy(true);
+	food.sprite.afterDestroyed();
     food.sprite.destroy();
     food.destroy();
   }

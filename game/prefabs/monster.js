@@ -12,14 +12,15 @@ var Monster = function(game, x, y, frame) {
   this.scale.x = 0.1;
   this.scale.y = 0.1;
 
-  this.swimming = true;
+  this.swimming = false;
   this.back_landing = false;
   this.base_speed = 500;
   this.speed = this.base_speed;
   this.turn_rate = 0.1;
-  this.fx = game.add.audio('splash', 10);
+  this.diveFX = game.add.audio('splash', 10);
+  this.jumpFX = game.add.audio('roar', 15);
 
-  game.time.events.loop(Phaser.Timer.SECOND * 0.5, this.updateVelocity.bind(this));
+  game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.updateVelocity.bind(this));
 
   //var stime = 1000;
 
@@ -79,12 +80,15 @@ Monster.prototype.swim = function() {
 };
 
 Monster.prototype.fly = function() {
+  if (this.swimming) 
+	  this.jump();
+  
   this.swimming = false; 
   this.body.data.gravityScale = 1;
 };
 
 Monster.prototype.dive = function() {
-  this.fx.play();
+  this.diveFX.play();
   if (this.angle < 0){
     this.back_landing = true
     this.speed = 0; 
@@ -96,11 +100,13 @@ Monster.prototype.updateVelocity = function() {
     this.back_landing = false;
 
   if (this.speed < this.base_speed)
-    this.speed += 50;
+    this.speed += 10;
   else
-    this.speed -= 50;
+    this.speed -= 10;
+};
 
-  
+Monster.prototype.jump = function() {
+  this.jumpFX.play();
 };
 
 module.exports = Monster;
