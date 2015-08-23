@@ -67,4 +67,9 @@ Monster.prototype.dive = function() {
   this.fx.play();
 };
 
+Monster.prototype.hitFood = function(monster, food) {
+	food.sprite.destroy();
+    food.destroy();
+};
+
 module.exports = Monster;

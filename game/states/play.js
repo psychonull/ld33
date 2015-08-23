@@ -1,11 +1,13 @@
 'use strict';
 
+var FoodGenerator = require('../prefabs/foodGenerator');
 var Food = require('../prefabs/Food');
 var Hud = require('../prefabs/hud.js');
 var Monster = require('../prefabs/monster');
 var graphics;
 var monsterCollisionGroup;
 var foodCollisionGroup;
+var foodGenerator;
 
 function Play() {
   this.worldSize = {
@@ -37,18 +39,17 @@ Play.prototype = {
     graphics.moveTo(0,300);
     graphics.lineTo(800, 300);
 
-    this.monster = new Monster(this.game, 200, 200);
-    this.monster.body.setCircle(28);
+    this.monster = new Monster(this.game, 200, 200, monsterCollisionGroup, foodCollisionGroup, this);
     this.monster.body.setCollisionGroup(monsterCollisionGroup);
     this.monster.body.collides(foodCollisionGroup, this.hitFood, this);
     this.game.add.existing(this.monster);
 
-
-    var food = new Food(this.game, 100, 300);
-    food.body.setRectangle(40, 40);
-    food.body.setCollisionGroup(foodCollisionGroup);
-    food.body.collides([foodCollisionGroup, monsterCollisionGroup]);
-    this.game.add.existing(food);
+    foodGenerator = new FoodGenerator(this.game, 200, 700, 100, monsterCollisionGroup, foodCollisionGroup)
+    //ar food = new Food(this.game, 100, 300);
+    //food.body.setRectangle(40, 40);
+    //food.body.setCollisionGroup(foodCollisionGroup);
+    //food.body.collides([foodCollisionGroup, monsterCollisionGroup]);
+    //this.game.add.existing(food);
 
     this.hud = new Hud(this.game);
     this.game.add.existing(this.hud);
@@ -57,15 +58,9 @@ Play.prototype = {
 
   },
   update: function() {
-	  
+	  foodGenerator.update();
   },
   hitFood: function(monster, food) {
-    //food.exists = false;
-    //food.body = null;
-    //food.kill = true;
-    //food.destroy(true);
-    //food.removeFromWorld();
-    //food.body.destroy(true);
     food.sprite.destroy();
     food.destroy();
   }
