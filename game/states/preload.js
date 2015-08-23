@@ -14,14 +14,22 @@ Preload.prototype = {
     this.load.setPreloadSprite(this.asset);
     this.load.image('Food', 'assets/Food.png');
     this.load.image('Shark', 'assets/Shark.png');
-    this.load.image('water', 'assets/water_blob.png');
+    this.load.image('water_blob', 'assets/water_blob.png');
+
+    this.load.image('bg_sky', 'assets/sky.png');
+    this.load.image('bg_water', 'assets/underwater.png');
+
     this.load.image('person', 'assets/person.jpg');
     this.load.image('tank1', 'assets/tank1.jpg');
     this.load.image('tank2', 'assets/tank2.jpg');
     this.load.image('tank3', 'assets/tank3.jpg');
 
+    this.load.spritesheet('volume', 'assets/volume.png', 40, 35, 3);
+
     this.load.bitmapFont('ka', 'assets/fonts/ka.png', 'assets/fonts/ka.fnt');
     this.load.bitmapFont('arcade', 'assets/fonts/arcade.png', 'assets/fonts/arcade.fnt');
+    this.load.bitmapFont('p2', 'assets/fonts/p2.png', 'assets/fonts/p2.fnt');
+
     this.load.audio('splash', 'assets/audio/soundEffects/splash.mp3');
     this.load.audio('theme', 'assets/audio/music/musicTheme.wav');
     this.load.audio('scream1', 'assets/audio/soundEffects/scream1.mp3');

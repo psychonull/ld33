@@ -16,17 +16,22 @@ var waterLineCollisionGroup;
 var foodGenerator;
 var personGenerator;
 
-function Play() {  
+function Play() {
 }
 
 Play.prototype = {
   create: function() {
     var game = this.game;
     var ws = settings.worldSize;
+    var wLevel = settings.water_level;
+    var imgSizeH = 1400;
 
+    game.onSpeedChange = new Phaser.Signal();
+    game.add.tileSprite(0, wLevel-imgSizeH, ws.width, imgSizeH, 'bg_sky');
+    game.add.tileSprite(0, wLevel, ws.width, imgSizeH, 'bg_water');
 
-    game.add.tileSprite(0, 0, ws.width, ws.height, 'background');
     game.world.setBounds(0, 0, ws.width, ws.height);
+
     this.musicTheme = game.add.audio('theme', 0.5, true);
     this.musicTheme.play();
 
@@ -41,7 +46,7 @@ Play.prototype = {
     waterLineCollisionGroup = this.game.physics.p2.createCollisionGroup();
     personCollisionGroup = this.game.physics.p2.createCollisionGroup();
     this.game.physics.p2.updateBoundsCollisionGroup();
-   
+
     this.monster = new Monster(this.game, 200, 200);
     this.monster.body.setCircle(28);
     this.monster.body.setCollisionGroup(monsterCollisionGroup);
@@ -50,7 +55,7 @@ Play.prototype = {
     this.monster.body.collides(personCollisionGroup, this.hitPerson, this);
     this.game.add.existing(this.monster);
 
-    foodGenerator = new FoodGenerator(this.game, 200, 700, 100, monsterCollisionGroup, foodCollisionGroup)
+    foodGenerator = new FoodGenerator(this.game, 500, 950, 100, monsterCollisionGroup, foodCollisionGroup)
     personGenerator = new PersonGenerator(this.game, 300, 200, 10000, monsterCollisionGroup, personCollisionGroup);
 
     this.water = new Water(this.game, monsterCollisionGroup, waterLineCollisionGroup);
@@ -74,14 +79,13 @@ Play.prototype = {
     food.destroy();
   },
   hitWater: function(monster, water) {
-    //food.sprite.destroy();
-    //food.destroy();
-    console.log('COLLIDE');
+    //this.water.splash(water);
   },
   hitPerson: function(monster, person) {
 	  person.sprite.afterDestroyed();
 	  person.sprite.destroy();
 	  person.destroy();
+    this.game.state.start('win');
   }
 };
 

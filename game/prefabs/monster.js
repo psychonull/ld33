@@ -4,9 +4,10 @@ var movement = 250;
 var cursors;
 var settings = require('../settings');
 
+
 var Monster = function(game, x, y, frame) {
   Phaser.Sprite.call(this, game, x, y, 'Shark', frame);
-  
+  this.maxSpeed = 1000;
   this.inputEnabled = true;
 
   this.scale.x = 0.1;
@@ -14,7 +15,7 @@ var Monster = function(game, x, y, frame) {
 
   this.swimming = false;
   this.back_landing = false;
-  this.base_speed = 700;
+  this.base_speed = 100;
   this.speed = this.base_speed;
   this.turn_rate = 0.1;
   this.diveFX = game.add.audio('splash', 10);
@@ -104,6 +105,18 @@ Monster.prototype.dive = function() {
     this.back_landing = true;
     this.speed = 0;    
   }
+};
+
+Monster.prototype.updateVelocity = function() {
+  if (this.speed >= 100)
+    this.back_landing = false;
+
+  if (this.speed < this.base_speed)
+    this.speed += 10;
+  else
+    this.speed -= 5;
+
+  this.game.onSpeedChange.dispatch(this.speed/this.maxSpeed);
 };
 
 Monster.prototype.jump = function() {
