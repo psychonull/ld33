@@ -1,16 +1,20 @@
 'use strict';
 
 var FoodGenerator = require('../prefabs/foodGenerator');
-var Food = require('../prefabs/Food');
+var PersonGenerator = require('../prefabs/personGenerator');
+var Food = require('../prefabs/food');
+var Person = require('../prefabs/person');
 var Hud = require('../prefabs/hud.js');
 var Monster = require('../prefabs/monster');
 var Water = require('../prefabs/water');
 var settings = require('../settings');
 var graphics;
 var monsterCollisionGroup;
+var personCollisionGroup;
 var foodCollisionGroup;
 var waterLineCollisionGroup;
 var foodGenerator;
+var personGenerator;
 
 function Play() {  
 }
@@ -20,19 +24,22 @@ Play.prototype = {
     var game = this.game;
     var ws = settings.worldSize;
 
+
     game.add.tileSprite(0, 0, ws.width, ws.height, 'background');
     game.world.setBounds(0, 0, ws.width, ws.height);
     this.musicTheme = game.add.audio('theme', 0.5, true);
-    //this.musicTheme.play();
+    this.musicTheme.play();
+
     game.stage.backgroundColor = "#A6947B";
     game.physics.startSystem(Phaser.Physics.P2JS);
     game.physics.p2.gravity.y = 400;
     game.physics.p2.setImpactEvents(true);
-    game.physics.p2.restitution = 0.9;
+    game.physics.p2.restitution = 0.2;
 
     monsterCollisionGroup = this.game.physics.p2.createCollisionGroup();
     foodCollisionGroup = this.game.physics.p2.createCollisionGroup();
     waterLineCollisionGroup = this.game.physics.p2.createCollisionGroup();
+    personCollisionGroup = this.game.physics.p2.createCollisionGroup();
     this.game.physics.p2.updateBoundsCollisionGroup();
 
     graphics = this.game.add.graphics(0, 0);
@@ -45,14 +52,11 @@ Play.prototype = {
     this.monster.body.setCollisionGroup(monsterCollisionGroup);
     this.monster.body.collides(foodCollisionGroup, this.hitFood, this);
     this.monster.body.collides(waterLineCollisionGroup, this.hitWater, this);
+    this.monster.body.collides(personCollisionGroup, this.hitPerson, this);
     this.game.add.existing(this.monster);
 
     foodGenerator = new FoodGenerator(this.game, 200, 700, 100, monsterCollisionGroup, foodCollisionGroup)
-    //ar food = new Food(this.game, 100, 300);
-    //food.body.setRectangle(40, 40);
-    //food.body.setCollisionGroup(foodCollisionGroup);
-    //food.body.collides([foodCollisionGroup, monsterCollisionGroup]);
-    //this.game.add.existing(food);
+    personGenerator = new PersonGenerator(this.game, 300, 200, 100, monsterCollisionGroup, personCollisionGroup);
 
     this.water = new Water(this.game, monsterCollisionGroup, waterLineCollisionGroup);
     this.game.add.existing(this.water);
@@ -65,8 +69,12 @@ Play.prototype = {
   },
   update: function() {
 	  foodGenerator.update();
+	  personGenerator.update();
   },
   hitFood: function(monster, food) {
+    foodGenerator.dicreaseCurrentFood();
+    monster.sprite.speed += 100;
+	  food.sprite.afterDestroyed();
     food.sprite.destroy();
     food.destroy();
   },
@@ -74,6 +82,11 @@ Play.prototype = {
     //food.sprite.destroy();
     //food.destroy();
     console.log('COLLIDE');
+  },
+  hitPerson: function(monster, person) {
+	  person.sprite.afterDestroyed();
+	  person.sprite.destroy();
+	  person.destroy();
   }
 };
 
