@@ -16,7 +16,7 @@ var FoodGenerator = function(game, x, y, timer, monsterCollisionGroup, foodColli
 
 FoodGenerator.prototype.update = function() {
 	if (this.time == 0 && this.currentFood <= this.maxFood){
-		var position = this.rdn(this.point,300);
+		var position = this.rdn(this.point,500);
 		this.time = this.timer;
 		var food = new Food(this.game, position.x, position.y);
     	food.body.setRectangle(40, 40);
