@@ -16,17 +16,21 @@ var waterLineCollisionGroup;
 var foodGenerator;
 var personGenerator;
 
-function Play() {  
+function Play() {
 }
 
 Play.prototype = {
   create: function() {
     var game = this.game;
     var ws = settings.worldSize;
+    var wLevel = settings.water_level;
+    var imgSizeH = 1400;
 
+    game.add.tileSprite(0, wLevel-imgSizeH, ws.width, imgSizeH, 'bg_sky');
+    game.add.tileSprite(0, wLevel, ws.width, imgSizeH, 'bg_water');
 
-    game.add.tileSprite(0, 0, ws.width, ws.height, 'background');
     game.world.setBounds(0, 0, ws.width, ws.height);
+
     this.musicTheme = game.add.audio('theme', 0.5, true);
     this.musicTheme.play();
 
@@ -74,14 +78,12 @@ Play.prototype = {
     food.destroy();
   },
   hitWater: function(monster, water) {
-    //food.sprite.destroy();
-    //food.destroy();
-    console.log('COLLIDE');
+    //this.water.splash(water);
   },
   hitPerson: function(monster, person) {
-	  person.sprite.afterDestroyed();
-	  person.sprite.destroy();
-	  person.destroy();
+    person.sprite.afterDestroyed();
+    person.sprite.destroy();
+    person.destroy();
     this.game.state.start('gameover');
   }
 };

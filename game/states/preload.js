@@ -14,7 +14,11 @@ Preload.prototype = {
     this.load.setPreloadSprite(this.asset);
     this.load.image('Food', 'assets/Food.png');
     this.load.image('Shark', 'assets/Shark.png');
-    this.load.image('water', 'assets/water_blob.png');
+    this.load.image('water_blob', 'assets/water_blob.png');
+
+    this.load.image('bg_sky', 'assets/sky.png');
+    this.load.image('bg_water', 'assets/underwater.png');
+
     this.load.image('person', 'assets/person.jpg');
     this.load.image('tank1', 'assets/tank1.jpg');
     this.load.image('tank2', 'assets/tank2.jpg');
