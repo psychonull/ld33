@@ -1,5 +1,6 @@
 'use strict';
 var Food = require('../prefabs/food');
+var settings = require('../settings');
 var monsterCollisionGroup;
 var foodCollisionGroup;
 
@@ -17,6 +18,7 @@ var FoodGenerator = function(game, x, y, timer, monsterCollisionGroup, foodColli
 FoodGenerator.prototype.update = function() {
 	if (this.time == 0 && this.currentFood <= this.maxFood){
 		var position = this.rdn(this.point,300);
+		//var random = Math.floor(Math.random() * 950);
 		this.time = this.timer;
 		var food = new Food(this.game, position.x, position.y);
     	food.body.setRectangle(40, 40);
@@ -26,7 +28,8 @@ FoodGenerator.prototype.update = function() {
     	this.currentFood += 1;
 	}
 	else{
-		this.time -= 1;
+		if(this.time > 0)
+			this.time -= 1;
 	}
 };
 
