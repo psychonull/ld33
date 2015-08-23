@@ -21,9 +21,7 @@ var Monster = function(game, x, y, frame) {
   this.diveFX = game.add.audio('splash', 10);
   this.jumpFX = game.add.audio('roar', 15);
 
-  game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.updateVelocity.bind(this));
-
-  //var stime = 1000;
+  game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.updateVelocity.bind(this));  
 
   this.game.physics.p2.enable(this, true);
   this.body.setCircle(20);
@@ -69,8 +67,6 @@ Monster.prototype.swim = function() {
     this.body.velocity.x = Math.cos(this.rotation) * this.speed;
     this.body.velocity.y = Math.sin(this.rotation) * this.speed;
   }
-
-
   console.log(this.body.velocity.y);
 };
 
