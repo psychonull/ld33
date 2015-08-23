@@ -4,8 +4,9 @@ var settings = require('../settings');
 var monsterCollisionGroup;
 var foodCollisionGroup;
 
-var FoodGenerator = function(game, x, y, timer, monsterCollisionGroup, foodCollisionGroup) {
-	this.point = new Phaser.Point(x, y);
+var FoodGenerator = function(game, point1, point2, timer, monsterCollisionGroup, foodCollisionGroup) {
+	this.point1 = point1;
+	this.point2 = point2;
 	this.timer = timer;
 	this.game = game;
 	this.monsterCollisionGroup = monsterCollisionGroup;
@@ -17,10 +18,10 @@ var FoodGenerator = function(game, x, y, timer, monsterCollisionGroup, foodColli
 
 FoodGenerator.prototype.update = function() {
 	if (this.time == 0 && this.currentFood <= this.maxFood){
-		var position = this.rdn(this.point,300);
-		//var random = Math.floor(Math.random() * 950);
+		var x = this.randomIntFromInterval(this.point1.x, this.point2.x);
+		var y = this.randomIntFromInterval(this.point1.y, this.point2.y);		
 		this.time = this.timer;
-		var food = new Food(this.game, position.x, position.y);
+		var food = new Food(this.game, x, y);
     	food.body.setRectangle(40, 40);
     	food.body.setCollisionGroup(this.foodCollisionGroup);
     	food.body.collides([this.foodCollisionGroup, this.monsterCollisionGroup]);
@@ -42,6 +43,10 @@ FoodGenerator.prototype.rdn = function(p, radius){ // random point whithin a cir
 FoodGenerator.prototype.dicreaseCurrentFood = function(p, radius){ // random point whithin a circle ( p= { x: Number, y: Number } ) 
 	if(this.currentFood > 0)
 		this.currentFood -= 1;
+}
+
+FoodGenerator.prototype.randomIntFromInterval = function(min,max){
+    return Math.floor(Math.random()*(max-min+1)+min);
 }
 
 module.exports = FoodGenerator;
