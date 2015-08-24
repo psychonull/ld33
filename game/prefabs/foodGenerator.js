@@ -18,10 +18,14 @@ var FoodGenerator = function(game, point1, point2, timer, monsterCollisionGroup,
 
 FoodGenerator.prototype.update = function() {
 	if (this.time == 0 && this.currentFood <= this.maxFood){
-		var x = this.randomIntFromInterval(this.point1.x, this.point2.x);
-		var y = this.randomIntFromInterval(this.point1.y, this.point2.y);		
+		//var x = this.randomIntFromInterval(this.point1.x, this.point2.x); //this.rdn(this.point,300);
+		//var y = this.randomIntFromInterval(this.point1.y, this.point2.y);
+		
+		var pos = this.rdn({x: 500, y: 1000 }, 300);
+		//var random = Math.floor(Math.random() * 950);
 		this.time = this.timer;
-		var food = new Food(this.game, x, y);
+
+		var food = new Food(this.game, pos.x, pos.y);
     	food.body.setRectangle(40, 40);
     	food.body.setCollisionGroup(this.foodCollisionGroup);
     	food.body.collides([this.foodCollisionGroup, this.monsterCollisionGroup]);
