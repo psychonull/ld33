@@ -23,6 +23,7 @@ Preload.prototype = {
 
     this.load.spritesheet('person', 'assets/guy.png', 100, 100, 6);
     this.load.image('bridge', 'assets/bridge.png');
+    this.load.image('bubble', 'assets/bubble.jpg');
 
     this.load.spritesheet('volume', 'assets/volume.png', 40, 35, 3);
 
