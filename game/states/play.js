@@ -51,8 +51,6 @@ Play.prototype = {
     this.game.physics.p2.updateBoundsCollisionGroup();
 
     this.monster = new Monster(this.game, 100, 1050);
-
-    this.monster.body.setCircle(28);
     this.monster.body.setCollisionGroup(monsterCollisionGroup);
     this.monster.body.collides(foodCollisionGroup, this.hitFood, this);
     this.monster.body.collides(waterLineCollisionGroup, this.hitWater, this);
@@ -72,7 +70,7 @@ Play.prototype = {
 
     this.bridge = new Bridge(this.game, monsterCollisionGroup, personCollisionGroup, bridgeLineCollisionGroup);
     this.game.add.existing(this.bridge);
-    
+
     this.hud = new Hud(this.game);
     this.game.add.existing(this.hud);
 
@@ -84,23 +82,54 @@ Play.prototype = {
 	  personGenerator.update();
   },
   hitFood: function(monster, food) {
+    var x = food.x, y = food.y, c = food.sprite.color;
     foodGenerator.dicreaseCurrentFood();
     monster.sprite.setSpeed(settings.speed_growth);
     food.sprite.afterDestroyed();
     food.sprite.destroy();
     food.destroy();
+
+    var block = this.game.add.emitter(x, y, 20);
+
+    block.makeParticles('food');
+    block.setRotation(0, 0);
+    block.setAlpha(1, 0, 3000);
+    block.setScale(0.8, 0, 0.8, 0, 3000);
+    block.gravity = -100;
+    block.explode(2000, 20);
+
+    block.forEach(function(p){
+        p.tint = c;
+    });
+
   },
   hitWater: function(monster, water) {
   },
   hitBridge: function(monster, bridge) {
   },
   hitPerson: function(monster, person) {
+    var x = person.x, y = person.y;
+
 	person.sprite.afterDestroyed();
 	person.sprite.destroy();
     person.destroy();
     this.hud.setTimer(20);
     personGenerator.createPersons(1, 100);
     monster.sprite.increaseSize();
+
+    var blood = this.game.add.emitter(x, y, 20);
+
+    blood.makeParticles('blurred-circle');
+    blood.setRotation(0, 0);
+    blood.setAlpha(0.5, 0, 3000);
+    blood.setScale(0.8, 0, 0.8, 0, 3000);
+    blood.gravity = 100;
+    blood.explode(2000, 20);
+
+    blood.forEach(function(p){
+        p.tint = 0xFF0000;
+    });
+
     //this.game.state.start('win');
   }
 };
