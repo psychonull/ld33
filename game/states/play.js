@@ -9,6 +9,7 @@ var Monster = require('../prefabs/monster');
 var Water = require('../prefabs/water');
 var Bridge = require('../prefabs/bridge');
 var settings = require('../settings');
+var _ = require('lodash');
 var graphics;
 var monsterCollisionGroup;
 var personCollisionGroup;
@@ -28,6 +29,8 @@ Play.prototype = {
     var ws = settings.worldSize;
     var wLevel = settings.water_level;
     var imgSizeH = settings.bg_image_size;
+
+    this.starting_setting = _.cloneDeep(settings);
 
     game.onSpeedChange = new Phaser.Signal();
     game.add.tileSprite(0, wLevel-imgSizeH, ws.width, imgSizeH, 'bg_sky');
@@ -64,10 +67,10 @@ Play.prototype = {
     var point2 = new Phaser.Point(ws.width, ws.height);
 
     foodGenerator = new FoodGenerator(this.game, point1, point2, 75, monsterCollisionGroup, foodCollisionGroup)
-    personGenerator = new PersonGenerator(this.game, 300, 340, 10000, 2, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup);
+    personGenerator = new PersonGenerator(this.game, 300, 340, 10000, 3, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup);
 
-    //this.water = new Water(this.game, monsterCollisionGroup, waterLineCollisionGroup);
-    //this.game.add.existing(this.water);
+    this.water = new Water(this.game, monsterCollisionGroup, waterLineCollisionGroup);
+    this.game.add.existing(this.water);
 
     this.bridge = new Bridge(this.game, monsterCollisionGroup, personCollisionGroup, bridgeLineCollisionGroup);
     this.game.add.existing(this.bridge);
@@ -114,15 +117,16 @@ Play.prototype = {
 	person.sprite.afterDestroyed();
 	person.sprite.destroy();
     person.destroy();
-    //personGenerator.createPersons(1, 100);
+
     personGenerator.killedPerson();
     monster.sprite.increaseSize();
     if(personGenerator.kills > 3)
-      check_point_time = 20;
-    else if(personGenerator.kills > 8)
       check_point_time = 10;
+    else if(personGenerator.kills > 8)
+      check_point_time = 8;
     else if(personGenerator.kills > 12)
       check_point_time = 5;
+
     this.hud.setTimer(check_point_time);
     var blood = this.game.add.emitter(x, y, 20);
 
@@ -137,7 +141,10 @@ Play.prototype = {
         p.tint = 0xFF0000;
     });
 
-    //this.game.state.start('win');
+    this.changeLevel();
+  },
+  changeLevel: function(){
+    this.bridge.move();
   }
 };
 
