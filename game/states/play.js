@@ -30,6 +30,12 @@ Play.prototype = {
     var wLevel = settings.water_level;
     var imgSizeH = settings.bg_image_size;
 
+    this.game.stats = {
+      peopleEaten: 0,
+      foodEaten: 0,
+      weight: 0
+    };
+
     this.starting_setting = _.cloneDeep(settings);
 
     game.onSpeedChange = new Phaser.Signal();
@@ -86,6 +92,7 @@ Play.prototype = {
 	  personGenerator.update();
   },
   hitFood: function(monster, food) {
+    this.game.stats.foodEaten++;
     var x = food.x, y = food.y, c = food.sprite.color;
     foodGenerator.dicreaseCurrentFood();
     monster.sprite.setSpeed(settings.speed_growth);
@@ -112,6 +119,7 @@ Play.prototype = {
   hitBridge: function(monster, bridge) {
   },
   hitPerson: function(monster, person) {
+    this.game.stats.peopleEaten++;
     var x = person.x, y = person.y;
 
 	person.sprite.afterDestroyed();

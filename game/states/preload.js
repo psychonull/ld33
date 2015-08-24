@@ -25,6 +25,9 @@ Preload.prototype = {
     this.load.image('bridge', 'assets/bridge.png');
     this.load.image('bubble', 'assets/bubble.jpg');
 
+    this.load.image('outline-guy', 'assets/outline-guy.png');
+    this.load.spritesheet('outline-monster', 'assets/outline-monster.png', 208, 200, 2);
+
     this.load.spritesheet('volume', 'assets/volume.png', 40, 35, 3);
 
     this.load.bitmapFont('ka', 'assets/fonts/ka.png', 'assets/fonts/ka.fnt');
