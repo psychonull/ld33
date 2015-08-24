@@ -10,6 +10,8 @@ var Food = function(game, x, y, options) {
 
   this.x = x;
   this.y = y;
+  
+  this.originalY = y;
 
   this.anchor.setTo(0.5, 0.5);
 
@@ -74,8 +76,8 @@ Food.prototype.update = function() {
 		this.body.force.x = 100;
 	else if (this.x >= this.originalX + 50)
 		this.body.force.x = -100;
-	//if (this.y >= settings.worldSize.height - 50)
-	//	return this.destroy(); 
+	if (this.y >= settings.worldSize.height - 50)
+		this.body.y = this.originalY;
 
   if(this.glow){
     this.updateLighting();
