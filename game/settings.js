@@ -10,5 +10,6 @@ module.exports = {
   monster_max_speed: 1000,
   growth_scale: 0.05,
   speed_growth: 100,
-  bridge_level: 1300
+  bridge_level: 1300,
+  check_point_time: 25
 };

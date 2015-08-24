@@ -9,11 +9,11 @@ var Bar = function(game, options) {
     width: 300, //bar width
     height: 30, //bar height
     leftMargin: 100, //space reserved for caption (?)
-    innerColor: "#F79000",
+    innerColor: "#C8FF00",
     outerColor: "#153030",
     caption: 'RAGE',
     fullColor: 0xFA023C,
-    fullThreshold: 0.9
+    fullThreshold: 0.8
   });
 
   this.value = this.config.value;

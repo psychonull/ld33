@@ -26,11 +26,11 @@ var Hud = function(game) {
   this.add(this.clockIcon);
 
   this.timer = new Cowntdown(game, {
-    value: 30 * 1000
+    value: 45 * 1000
   });
 
   this.timer.x = 50;
-  this.timer.y = 560;
+  this.timer.y = 565;
 
   this.game.add.existing(this.timer);
   this.add(this.timer);
