@@ -30,7 +30,7 @@ var Hud = function(game) {
   });
 
   this.timer.x = 50;
-  this.timer.y = 560;
+  this.timer.y = 565;
 
   this.game.add.existing(this.timer);
   this.add(this.timer);
@@ -50,6 +50,7 @@ Hud.prototype.constructor = Hud;
 
 Hud.prototype.update = function() {
   this.timer.update();
+  this.bar.update();
 };
 
 Hud.prototype.setTimer = function(value) {

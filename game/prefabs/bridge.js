@@ -14,7 +14,7 @@ var Bridge = function(game, monsterGroup, personGroup, bridgeGroup) {
 	  var newRect;
 
 	  var length = Math.floor(maxWidth/width),
-	    xAnchor = 0, yAnchor = 370;
+	    xAnchor = 0, yAnchor = settings.bridge_level;
 
 	  for (var j = 0; j < lines; j++) {
 	    for (var i = 0; i <= length; i++) {

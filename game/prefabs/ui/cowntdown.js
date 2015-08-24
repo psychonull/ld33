@@ -7,9 +7,12 @@ var Cowntdown = function(game, options) {
     x: 0,
     y: 0,
     font: 'p2',
-    size: 30,
+    size: 22,
     value: 0, // time to cowntdown from (ms)
-    callback: null
+    callback: null,
+    alertThreshold: 10 * 1000,
+    tint: 0xFFFFFF,
+    alertTint: 0xFA023C
   });
   //
   // Phaser.BitmapText.call(this, game, this.config.x, this.config.y, this.config.font, '', this.config.size);
@@ -48,6 +51,14 @@ Cowntdown.prototype.update = function() {
         value: remaining,
         valueText: this.formatTime(remaining)
       });
+      if(remaining < this.config.alertThreshold){
+        this.text.tint = this.config.alertTint;
+        this.text.x = this.config.x + this.game.rnd.integerInRange(-3,3);
+        this.text.y = this.config.y + this.game.rnd.integerInRange(-3,3);
+      }
+      else {
+        this.text.tint = this.config.tint;
+      }
     }
 
     this.text.setText(this.formatTime(remaining));
@@ -71,8 +82,11 @@ Cowntdown.prototype.pause = function(){
 };
 
 Cowntdown.prototype.formatTime = function(ms){
+  var mins = Math.floor((ms % 36e5) / 6e4);
+
   var seconds = Math.floor(ms / 1000) % 60;
   var milliseconds = Math.floor(ms) % 1000;
+
   if (milliseconds < 10){
       milliseconds = '00' + milliseconds;
   }
@@ -81,8 +95,10 @@ Cowntdown.prototype.formatTime = function(ms){
   }
   if (seconds < 10)
       seconds = '0' + seconds;
-
-  return seconds + '.' + milliseconds;
+  if(mins == 0){
+    mins = '0';
+  }
+  return mins + ':' + seconds + '.' + milliseconds;
 };
 
 module.exports = Cowntdown;
