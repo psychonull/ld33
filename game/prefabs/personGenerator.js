@@ -17,7 +17,9 @@ var PersonGenerator = function(game, x, y, timer, max, monsterCollisionGroup, br
   this.max = max;
   this.kills = 0;
 
-  game.time.events.loop(Phaser.Timer.SECOND * 5, this.createPerson.bind(this));
+  this.personAddTimer = game.time.events.loop(Phaser.Timer.SECOND * 5, this.createPerson, this);
+
+	this.game.onBrokenBridge.add(this.onBrokenBridge, this);
 };
 
 PersonGenerator.prototype = Object.create(Phaser.Sprite.prototype);
@@ -32,17 +34,27 @@ PersonGenerator.prototype.update = function() {
 
 };
 
+PersonGenerator.prototype.onBrokenBridge = function(){
+	// generate ppl more frequently
+	this.game.time.events.remove(this.personAddTimer);
+	this.game.time.events.loop(this.game.rnd.integerInRange(600, 1000), this.createPerson, this);
+};
 
 PersonGenerator.prototype.createPerson = function(){
 
-  if (this.persons >= this.max){
+  if (this.persons >= this.max && !this.game.brokenBridge){
     return;
   }
 
   var person = new Person(this.game, this.posX, this.posY);
   person.body.setRectangle(40, 40);
   person.body.setCollisionGroup(this.personCollisionGroup);
-  person.body.collides([this.monsterCollisionGroup, this.bridgeLineCollisionGroup]);
+	if(this.game.brokenBridge){
+  	person.body.collides([this.monsterCollisionGroup]);
+	}
+	else {
+  	person.body.collides([this.monsterCollisionGroup, this.bridgeLineCollisionGroup]);
+	}
   person.body.collideWorldBounds = false;
   this.game.add.existing(person);
   this.persons++;

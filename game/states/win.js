@@ -7,13 +7,13 @@ Win.prototype = {
 
   },
   create: function () {
-    this.titleText = this.game.add.bitmapText(400,100, 'p2', 'Game Over!', 42);
-    this.titleText.anchor.setTo(0.5, 0.5);
 
-    this.congratsText = this.game.add.bitmapText(400, 200, 'p2', 'You Win!', 32);
+    this.game.stage.backgroundColor = "#153030";
+
+    this.congratsText = this.game.add.bitmapText(400, 200, 'p2', 'CONGRATS!', 32);
     this.congratsText.anchor.setTo(0.5, 0.5);
 
-    this.instructionText = this.game.add.bitmapText(400, 300, 'p2', 'Click To Play Again', 16);
+    this.instructionText = this.game.add.bitmapText(400, 300, 'p2', 'You are the coolest mutant caused by chemical waste ever!', 12);
     this.instructionText.anchor.setTo(0.5, 0.5);
   },
   update: function () {

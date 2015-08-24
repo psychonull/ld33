@@ -136,6 +136,11 @@ Monster.prototype.increaseSize = function() {
 
   this.physicShape.radius += settings.growth_scale * 3;
   this.game.stats.weight = this.scale.y;
+
+  if(this.game.stats.weight > 2.5){
+    this.game.onWin.dispatch();
+  }
+
 };
 
 Monster.prototype.setSpeed = function(value) {

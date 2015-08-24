@@ -36,6 +36,10 @@ Play.prototype = {
       weight: 0
     };
 
+    this.game.onWin = new Phaser.Signal();
+
+    this.game.onWin.add(this.winCallback, this);
+
     this.starting_setting = _.cloneDeep(settings);
 
     game.onSpeedChange = new Phaser.Signal();
@@ -71,6 +75,9 @@ Play.prototype = {
 
     var point1 = new Phaser.Point(0, wLevel);
     var point2 = new Phaser.Point(ws.width, ws.height);
+
+    this.game.brokenBridge = false;
+    this.game.onBrokenBridge = new Phaser.Signal();
 
     foodGenerator = new FoodGenerator(this.game, point1, point2, 75, monsterCollisionGroup, foodCollisionGroup)
     personGenerator = new PersonGenerator(this.game, 300, 340, 10000, 3, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup);
@@ -154,6 +161,9 @@ Play.prototype = {
   },
   changeLevel: function(){
     this.bridge.move();
+  },
+  winCallback: function(){
+    this.game.state.start('win');
   }
 };
 

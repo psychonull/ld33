@@ -79,11 +79,16 @@ Bridge.prototype.move = function() {
 }
 
 Bridge.prototype.moveTo = function(yPos){
+	if(this.game.brokenBridge){
+		return;
+	}
 	settings.bridge_level = yPos;
 	this.first_block.body.y = yPos;
 	this.last_block.body.y = yPos;
 	if (settings.bridge_level == 800)	{
 		this.game.physics.p2.removeConstraint(this.middle_contraint);
+		this.game.brokenBridge = true;
+		this.game.onBrokenBridge.dispatch();
 	}
 };
 
