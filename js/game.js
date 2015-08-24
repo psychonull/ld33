@@ -1398,8 +1398,8 @@ Preload.prototype = {
     this.load.image('food', 'assets/food.png');
     this.load.spritesheet('monster', 'assets/monster.png', 200, 200, 4);
     this.load.image('water_blob', 'assets/water_blob.png');
-    this.load.image('blurred-circle', '/assets/blurred-circle.png');
-    this.load.image('clock-icon', '/assets/clock-icon.png');
+    this.load.image('blurred-circle', 'assets/blurred-circle.png');
+    this.load.image('clock-icon', 'assets/clock-icon.png');
 
     this.load.image('bg_sky', 'assets/sky.png');
     this.load.image('bg_water', 'assets/underwater.png');
