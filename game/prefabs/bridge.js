@@ -14,6 +14,7 @@ var Bridge = function(game, monsterGroup, personGroup, bridgeGroup) {
 	  var newRect;
 	  this.first_block;
 	  this.last_block;
+	  this.middle_contraint;
 
 	  var length = Math.floor(maxWidth/width),
 	    xAnchor = 0, yAnchor = settings.bridge_level;
@@ -51,7 +52,13 @@ var Bridge = function(game, monsterGroup, personGroup, bridgeGroup) {
 	          maxForce);
 
 	        constraint.collideConnected = false;
+	        
+	        if (i === Math.floor(length/2)){	     			
+	        	this.middle_contraint = constraint;
+	        }
 	      }
+
+	      
 
 	      lastRect = newRect;
 	    }
@@ -72,6 +79,9 @@ Bridge.prototype.move = function() {
 
 	this.first_block.body.y -= 50;
 	this.last_block.body.y -= 50;
+
+	if (settings.bridge_level == 800)		
+		this.game.physics.p2.removeConstraint(this.middle_contraint);
 
 }
 
