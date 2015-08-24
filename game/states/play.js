@@ -51,8 +51,6 @@ Play.prototype = {
     this.game.physics.p2.updateBoundsCollisionGroup();
 
     this.monster = new Monster(this.game, 100, 1050);
-
-    this.monster.body.setCircle(28);
     this.monster.body.setCollisionGroup(monsterCollisionGroup);
     this.monster.body.collides(foodCollisionGroup, this.hitFood, this);
     this.monster.body.collides(waterLineCollisionGroup, this.hitWater, this);
