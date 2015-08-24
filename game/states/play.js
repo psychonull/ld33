@@ -65,8 +65,8 @@ Play.prototype = {
     foodGenerator = new FoodGenerator(this.game, point1, point2, 75, monsterCollisionGroup, foodCollisionGroup)
     personGenerator = new PersonGenerator(this.game, 300, 340, 10000, 2, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup);
 
-    this.water = new Water(this.game, monsterCollisionGroup, waterLineCollisionGroup);
-    this.game.add.existing(this.water);
+    //this.water = new Water(this.game, monsterCollisionGroup, waterLineCollisionGroup);
+    //this.game.add.existing(this.water);
 
     this.bridge = new Bridge(this.game, monsterCollisionGroup, personCollisionGroup, bridgeLineCollisionGroup);
     this.game.add.existing(this.bridge);

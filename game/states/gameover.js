@@ -7,14 +7,13 @@ GameOver.prototype = {
 
   },
   create: function () {
-    var style = { font: '65px Arial', fill: '#ffffff', align: 'center'};
-    this.titleText = this.game.add.text(400,100, 'Game Over!', style);
+    this.titleText = this.game.add.bitmapText(400,100, 'p2', 'Game Over!', 42);
     this.titleText.anchor.setTo(0.5, 0.5);
 
-    this.congratsText = this.game.add.text(400, 200, 'You Lose', { font: '32px Arial', fill: '#ffffff', align: 'center'});
+    this.congratsText = this.game.add.bitmapText(400, 200, 'p2', 'You Lose', 32);
     this.congratsText.anchor.setTo(0.5, 0.5);
 
-    this.instructionText = this.game.add.text(400, 300, 'Click To Play Again', { font: '16px Arial', fill: '#ffffff', align: 'center'});
+    this.instructionText = this.game.add.bitmapText(400, 300, 'p2', 'Click To Play Again', 16);
     this.instructionText.anchor.setTo(0.5, 0.5);
   },
   update: function () {
