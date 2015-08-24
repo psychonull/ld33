@@ -26,7 +26,7 @@ var Hud = function(game) {
   this.add(this.clockIcon);
 
   this.timer = new Cowntdown(game, {
-    value: 2000 * 1000
+    value: 30 * 1000
   });
 
   this.timer.x = 50;

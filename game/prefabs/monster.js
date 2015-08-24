@@ -118,4 +118,9 @@ Monster.prototype.increaseSize = function() {
   this.scale.y += settings.growth_scale;
 };
 
+Monster.prototype.setSpeed = function(value) {
+  if(!(this.speed > this.maxSpeed))
+    this.speed += value;
+};
+
 module.exports = Monster;

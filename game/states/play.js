@@ -50,7 +50,7 @@ Play.prototype = {
     personCollisionGroup = this.game.physics.p2.createCollisionGroup();
     this.game.physics.p2.updateBoundsCollisionGroup();
 
-    this.monster = new Monster(this.game, 100, 100);
+    this.monster = new Monster(this.game, 100, 1050);
     this.monster.body.setCircle(28);
     this.monster.body.setCollisionGroup(monsterCollisionGroup);
     this.monster.body.collides(foodCollisionGroup, this.hitFood, this);
@@ -62,7 +62,7 @@ Play.prototype = {
     var point1 = new Phaser.Point(0, wLevel);
     var point2 = new Phaser.Point(ws.width, ws.height);
 
-    foodGenerator = new FoodGenerator(this.game, point1, point2, 50, monsterCollisionGroup, foodCollisionGroup)
+    foodGenerator = new FoodGenerator(this.game, point1, point2, 75, monsterCollisionGroup, foodCollisionGroup)
     personGenerator = new PersonGenerator(this.game, 300, 340, 10000, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup);
     personGenerator.createPersons(1, 1);
 
@@ -84,7 +84,7 @@ Play.prototype = {
   },
   hitFood: function(monster, food) {
     foodGenerator.dicreaseCurrentFood();
-    monster.sprite.speed += 100;
+    monster.sprite.setSpeed(settings.speed_growth);
     food.sprite.afterDestroyed();
     food.sprite.destroy();
     food.destroy();
