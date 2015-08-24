@@ -11,5 +11,5 @@ module.exports = {
   growth_scale: 0.05,
   speed_growth: 100,
   bridge_level: 1300,
-  check_point_time: 25
+  check_point_time: 15
 };

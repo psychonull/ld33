@@ -117,17 +117,16 @@ Play.prototype = {
 	person.sprite.afterDestroyed();
 	person.sprite.destroy();
     person.destroy();
-    
-    this.hud.setTimer(20);
 
     personGenerator.killedPerson();
     monster.sprite.increaseSize();
     if(personGenerator.kills > 3)
-      check_point_time = 20;
-    else if(personGenerator.kills > 8)
       check_point_time = 10;
+    else if(personGenerator.kills > 8)
+      check_point_time = 8;
     else if(personGenerator.kills > 12)
       check_point_time = 5;
+
     this.hud.setTimer(check_point_time);
     var blood = this.game.add.emitter(x, y, 20);
 

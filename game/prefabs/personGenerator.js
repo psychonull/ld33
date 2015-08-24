@@ -25,7 +25,7 @@ PersonGenerator.prototype.constructor = PersonGenerator;
 
 PersonGenerator.prototype.update = function() {
 
-  if (this.kills >= 2 || this.kills >= 5){
+  if (this.kills >= 5 || this.kills >= 10){
     this.max--;
     this.max = this.max < 1 ? 1 : this.max;
   }
@@ -46,13 +46,13 @@ PersonGenerator.prototype.createPerson = function(){
   person.body.collideWorldBounds = false;
   this.game.add.existing(person);
   this.persons++;
-  //console.log('created Person | ' + this.persons + ' / ' + this.max);
+  console.log('created Person | ' + this.persons + ' / ' + this.max);
 };
 
 PersonGenerator.prototype.killedPerson = function(){
   this.persons--;
   this.kills++;
-  //console.log('killed Person | ' + this.persons + ' / ' + this.kills);
+  console.log('killed Person | ' + this.persons + ' / ' + this.kills);
 };
 
 PersonGenerator.prototype.setMax = function(max){
