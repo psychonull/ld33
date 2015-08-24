@@ -26,6 +26,15 @@ var Monster = function(game, x, y, frame) {
   this.game.physics.p2.enable(this, false);
   this.body.setCircle(20);
   this.anchor.set(0.7,0.5);
+  
+  this.emitter = this.game.add.emitter(x, y, 300);
+  this.emitter.makeParticles('bubble');
+  this.emitter.setRotation(0, 0);
+  this.emitter.setAlpha(1, 0, 3000);
+  this.emitter.setScale(0.8, 0, 0.8, 0, 3000);
+  this.emitter.gravity = -10;
+  this.emitter.start(false, 5000, 100);
+
 
   cursors = this.game.input.keyboard.createCursorKeys();
   aKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
@@ -37,10 +46,15 @@ Monster.prototype.constructor = Monster;
 
 Monster.prototype.update = function() {
 
+    this.emitter.emitX = this.x;
+    this.emitter.emitY = this.y;
+	
   if (this.position.y > settings.water_level){
+	this.emitter.on = true;
     this.swim();
   }
   else{
+	this.emitter.on = false;
     this.fly();
   }
 

@@ -51,6 +51,7 @@ Play.prototype = {
     this.game.physics.p2.updateBoundsCollisionGroup();
 
     this.monster = new Monster(this.game, 100, 1050);
+
     this.monster.body.setCircle(28);
     this.monster.body.setCollisionGroup(monsterCollisionGroup);
     this.monster.body.collides(foodCollisionGroup, this.hitFood, this);
@@ -90,12 +91,8 @@ Play.prototype = {
     food.destroy();
   },
   hitWater: function(monster, water) {
-    //this.water.splash(water);
   },
   hitBridge: function(monster, bridge) {
-	    //food.sprite.destroy();
-	    //food.destroy();
-	    console.log('COLLIDE');
   },
   hitPerson: function(monster, person) {
 	person.sprite.afterDestroyed();

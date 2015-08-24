@@ -21,8 +21,9 @@ Preload.prototype = {
     this.load.image('bg_sky', 'assets/sky.png');
     this.load.image('bg_water', 'assets/underwater.png');
 
-    this.load.image('person', 'assets/person.jpg');
-    this.load.image('bridge', 'assets/bridge.jpg');
+    this.load.spritesheet('person', 'assets/guy.png', 100, 100, 6);
+    this.load.image('bridge', 'assets/bridge.png');
+    this.load.image('bubble', 'assets/bubble.jpg');
 
     this.load.spritesheet('volume', 'assets/volume.png', 40, 35, 3);
 

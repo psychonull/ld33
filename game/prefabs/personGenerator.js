@@ -31,6 +31,8 @@ PersonGenerator.prototype.update = function() {
     	person.body.collideWorldBounds = false;
     	this.currentQuantity += 1;
     	this.game.add.existing(person);
+
+      //this.game.camera.follow(person);
 	}
 	else{
 		if(this.time > 0)

@@ -5,29 +5,35 @@ var Person = function(game, x, y, frame) {
 
   this.x = x;
   this.y = y;
-  
+
   this.originalX = x;
   this.worldWidth = game.world.width;
 
   this.width = 40;
   this.height = 30;
-  
+
   this.inputEnabled = true;
-  
+
   game.physics.p2.enable(this);
 
   this.screamFX1 = game.add.audio('scream1', 10);
   this.screamFX2 = game.add.audio('scream2', 10);
   this.screamFX3 = game.add.audio('scream3', 10);
-  
+
   this.body.setZeroDamping();
   this.body.fixedRotation = true;
   this.body.velocity.x = 200;
-  this.body.velocity.y = 0;  
+  this.body.velocity.y = 0;
   this.body.mass = 2;
-  
+
   this.dir = 1;
-  
+
+  this.scale.set(0.5);
+  this.smoothed = false;
+  this.frame = 0;
+
+  this.animations.add('walk', [0, 1, 2, 3, 4, 5]);
+  this.animations.play('walk', 10, true);
 };
 
 Person.prototype = Object.create(Phaser.Sprite.prototype);
@@ -53,7 +59,8 @@ Person.prototype.update = function() {
 	else if (this.x <= 100){
 		this.dir = 1;
 	}
-	
+
+  this.scale.set(0.5*this.dir, 0.5);
 	this.body.velocity.x = this.dir*200;
 };
 
