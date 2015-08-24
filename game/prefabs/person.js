@@ -1,13 +1,24 @@
 'use strict';
-
+var settings = require('../settings');
 var Person = function(game, x, y, frame) {
+  this.dir = game.rnd.integerInRange(0, 1);
+  
+  if (this.dir === 0){
+	  this.dir = -1;
+	  x = settings.worldSize.width - 40;
+	  y = settings.bridge_level-35;
+  }
+  else {
+	  x = 40;
+	  y = settings.bridge_level-35;
+  };
+  
   Phaser.Sprite.call(this, game, x, y, 'person', frame);
-
+  
   this.x = x;
   this.y = y;
-
   this.originalX = x;
-  this.worldWidth = game.world.width;
+  this.worldWidth = settings.worldSize.width;
 
   this.width = 40;
   this.height = 30;
@@ -22,12 +33,17 @@ var Person = function(game, x, y, frame) {
 
   this.body.setZeroDamping();
   this.body.fixedRotation = true;
-  this.body.velocity.x = 200;
   this.body.velocity.y = 0;
   this.body.mass = 2;
-
-  this.dir = 1;
-
+  
+  
+  if (this.dir === -1){
+	  this.body.velocity.x = -200;
+  }
+  else {
+	  this.body.velocity.x = 200;
+  };
+  
   this.scale.set(0.5);
   this.smoothed = false;
   this.frame = 0;
@@ -53,11 +69,14 @@ Person.prototype.afterDestroyed = function(){
 
 Person.prototype.update = function() {
 	this.body.velocity.y = 40;
-	if (this.x >= this.worldWidth - 100){
-		this.dir = -1;
+	
+	if (this.x >= settings.worldSize.width - 40){
+		this.body.x = 40;
+		this.body.y = settings.bridge_level-35;
 	}
-	else if (this.x <= 100){
-		this.dir = 1;
+	else if (this.x <= 40){
+		this.body.x = settings.worldSize.width - 40;
+		this.body.y = settings.bridge_level-35;
 	}
 
   this.scale.set(0.5*this.dir, 0.5);

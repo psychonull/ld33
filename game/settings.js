@@ -9,5 +9,6 @@ module.exports = {
   monster_base_speed: 300,
   monster_max_speed: 1000,
   growth_scale: 0.05,
-  speed_growth: 100
+  speed_growth: 100,
+  bridge_level: 370
 };
