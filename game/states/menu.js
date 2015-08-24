@@ -1,5 +1,6 @@
 
 'use strict';
+var _ = require('lodash');
 
 function Menu() {}
 
@@ -19,16 +20,32 @@ Menu.prototype = {
     this.instructionsText.tint = 0x34f3ff;
     this.instructionsText.anchor.setTo(0.5, 0.5);
 
-    this.game.input.keyboard.onDownCallback = function(e) {
-      this.game.state.start('play');
-      this.game.input.keyboard.onDownCallback = function(){};
-    };
+    this.instructionsSeen = parseInt(window.localStorage.getItem('instructionsSeen') || 0,10);
+    if(this.instructionsSeen > 0){
+      this.instructionsText =  this.game.add.bitmapText(this.game.world.centerX, 560, 'p2', 'Press <h> for help', 12);
+      this.instructionsText.tint = 0x34f3ff;
+    }
+
+    this.game.input.keyboard.onDownCallback = _.bind(this.passToNextState, this);
 
   },
   update: function() {
     if(this.game.input.activePointer.justPressed()) {
-      this.game.input.keyboard.onDownCallback = function(){};
-      this.game.state.start('play');
+      this.passToNextState();
+    }
+  },
+  passToNextState: function(e){
+    this.game.input.keyboard.onDownCallback = function(){};
+    if(this.instructionsSeen === 0){
+      this.game.state.start('instructions');
+    }
+    else {
+      if(e && e.keyCode === 72){
+        this.game.state.start('instructions');
+      }
+      else {
+        this.game.state.start('play');
+      }
     }
   }
 };
