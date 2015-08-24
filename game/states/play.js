@@ -80,6 +80,7 @@ Play.prototype = {
 
     this.bridge = new Bridge(this.game, monsterCollisionGroup, personCollisionGroup, bridgeLineCollisionGroup);
     this.game.add.existing(this.bridge);
+    this.bridge.moveTo(this.starting_setting.bridge_base_level);
 
     this.hud = new Hud(this.game);
     this.game.add.existing(this.hud);

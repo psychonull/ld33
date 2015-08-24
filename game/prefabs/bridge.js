@@ -52,13 +52,13 @@ var Bridge = function(game, monsterGroup, personGroup, bridgeGroup) {
 	          maxForce);
 
 	        constraint.collideConnected = false;
-	        
-	        if (i === Math.floor(length/2)){	     			
+
+	        if (i === Math.floor(length/2)){
 	        	this.middle_contraint = constraint;
 	        }
 	      }
 
-	      
+
 
 	      lastRect = newRect;
 	    }
@@ -69,20 +69,22 @@ Bridge.prototype = Object.create(Phaser.Group.prototype);
 Bridge.prototype.constructor = Bridge;
 
 Bridge.prototype.update = function() {
-  
+
   // write your prefab's specific update code here
-  
+
 };
 
 Bridge.prototype.move = function() {
-	settings.bridge_level -= 50;
-
-	this.first_block.body.y -= 50;
-	this.last_block.body.y -= 50;
-
-	if (settings.bridge_level == 800)		
-		this.game.physics.p2.removeConstraint(this.middle_contraint);
-
+	this.moveTo(settings.bridge_level - 50);
 }
+
+Bridge.prototype.moveTo = function(yPos){
+	settings.bridge_level = yPos;
+	this.first_block.body.y = yPos;
+	this.last_block.body.y = yPos;
+	if (settings.bridge_level == 800)	{
+		this.game.physics.p2.removeConstraint(this.middle_contraint);
+	}
+};
 
 module.exports = Bridge;
