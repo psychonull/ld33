@@ -35,10 +35,12 @@ var Monster = function(game, x, y, frame) {
   this.emitter.gravity = -10;
   this.emitter.start(false, 5000, 100);
 
-
   cursors = this.game.input.keyboard.createCursorKeys();
   aKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
   dKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
+
+  this.animations.add('move', [0, 1, 2, 3]);
+  this.animations.play('move', 10, true);
 };
 
 Monster.prototype = Object.create(Phaser.Sprite.prototype);

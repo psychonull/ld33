@@ -13,7 +13,7 @@ Preload.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
     this.load.image('food', 'assets/food.png');
-    this.load.image('monster', 'assets/monster.png');
+    this.load.spritesheet('monster', 'assets/monster.png', 200, 200, 4);
     this.load.image('water_blob', 'assets/water_blob.png');
     this.load.image('blurred-circle', '/assets/blurred-circle.png');
     this.load.image('clock-icon', '/assets/clock-icon.png');
