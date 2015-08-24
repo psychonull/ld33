@@ -9,6 +9,7 @@ var Monster = require('../prefabs/monster');
 var Water = require('../prefabs/water');
 var Bridge = require('../prefabs/bridge');
 var settings = require('../settings');
+var _ = require('lodash');
 var graphics;
 var monsterCollisionGroup;
 var personCollisionGroup;
@@ -17,6 +18,7 @@ var waterLineCollisionGroup;
 var bridgeLineCollisionGroup;
 var foodGenerator;
 var personGenerator;
+var check_point_time = settings.check_point_time;
 
 function Play() {
 }
@@ -28,6 +30,8 @@ Play.prototype = {
     var wLevel = settings.water_level;
     var imgSizeH = settings.bg_image_size;
 
+    this.starting_setting = _.cloneDeep(settings);
+
     game.onSpeedChange = new Phaser.Signal();
     game.add.tileSprite(0, wLevel-imgSizeH, ws.width, imgSizeH, 'bg_sky');
     game.add.tileSprite(0, wLevel, ws.width, imgSizeH, 'bg_water');
@@ -36,6 +40,7 @@ Play.prototype = {
 
     this.musicTheme = game.add.audio('theme', 0.5, true);
     this.musicTheme.play();
+    game.state.onStateChange.add(function(newState){this.game.sound.stopAll();}, this);
 
     game.stage.backgroundColor = "#A6947B";
     game.physics.startSystem(Phaser.Physics.P2JS);
@@ -64,8 +69,8 @@ Play.prototype = {
     foodGenerator = new FoodGenerator(this.game, point1, point2, 75, monsterCollisionGroup, foodCollisionGroup)
     personGenerator = new PersonGenerator(this.game, 300, 340, 10000, 3, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup);
 
-    //this.water = new Water(this.game, monsterCollisionGroup, waterLineCollisionGroup);
-    //this.game.add.existing(this.water);
+    this.water = new Water(this.game, monsterCollisionGroup, waterLineCollisionGroup);
+    this.game.add.existing(this.water);
 
     this.bridge = new Bridge(this.game, monsterCollisionGroup, personCollisionGroup, bridgeLineCollisionGroup);
     this.game.add.existing(this.bridge);
@@ -112,11 +117,18 @@ Play.prototype = {
 	person.sprite.afterDestroyed();
 	person.sprite.destroy();
     person.destroy();
+    
     this.hud.setTimer(20);
-    //personGenerator.createPersons(1, 100);
+
     personGenerator.killedPerson();
     monster.sprite.increaseSize();
-
+    if(personGenerator.kills > 3)
+      check_point_time = 20;
+    else if(personGenerator.kills > 8)
+      check_point_time = 10;
+    else if(personGenerator.kills > 12)
+      check_point_time = 5;
+    this.hud.setTimer(check_point_time);
     var blood = this.game.add.emitter(x, y, 20);
 
     blood.makeParticles('blurred-circle');
@@ -130,7 +142,10 @@ Play.prototype = {
         p.tint = 0xFF0000;
     });
 
-    //this.game.state.start('win');
+    this.changeLevel();
+  },
+  changeLevel: function(){
+    this.bridge.move();
   }
 };
 

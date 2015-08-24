@@ -25,7 +25,7 @@ PersonGenerator.prototype.constructor = PersonGenerator;
 
 PersonGenerator.prototype.update = function() {
 
-  if (this.kills >= 5 || this.kills >= 10){
+  if (this.kills >= 2 || this.kills >= 5){
     this.max--;
     this.max = this.max < 1 ? 1 : this.max;
   }
