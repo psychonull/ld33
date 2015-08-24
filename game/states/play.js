@@ -9,6 +9,7 @@ var Monster = require('../prefabs/monster');
 var Water = require('../prefabs/water');
 var Bridge = require('../prefabs/bridge');
 var settings = require('../settings');
+var _ = require('lodash');
 var graphics;
 var monsterCollisionGroup;
 var personCollisionGroup;
@@ -27,6 +28,8 @@ Play.prototype = {
     var ws = settings.worldSize;
     var wLevel = settings.water_level;
     var imgSizeH = settings.bg_image_size;
+
+    this.starting_setting = _.cloneDeep(settings);
 
     game.onSpeedChange = new Phaser.Signal();
     game.add.tileSprite(0, wLevel-imgSizeH, ws.width, imgSizeH, 'bg_sky');
@@ -64,8 +67,8 @@ Play.prototype = {
     foodGenerator = new FoodGenerator(this.game, point1, point2, 75, monsterCollisionGroup, foodCollisionGroup)
     personGenerator = new PersonGenerator(this.game, 300, 340, 10000, 2, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup);
 
-    //this.water = new Water(this.game, monsterCollisionGroup, waterLineCollisionGroup);
-    //this.game.add.existing(this.water);
+    this.water = new Water(this.game, monsterCollisionGroup, waterLineCollisionGroup);
+    this.game.add.existing(this.water);
 
     this.bridge = new Bridge(this.game, monsterCollisionGroup, personCollisionGroup, bridgeLineCollisionGroup);
     this.game.add.existing(this.bridge);
@@ -113,7 +116,6 @@ Play.prototype = {
 	person.sprite.destroy();
     person.destroy();
     this.hud.setTimer(20);
-    //personGenerator.createPersons(1, 100);
     personGenerator.killedPerson();
     monster.sprite.increaseSize();
 
@@ -130,7 +132,10 @@ Play.prototype = {
         p.tint = 0xFF0000;
     });
 
-    //this.game.state.start('win');
+    this.changeLevel();
+  },
+  changeLevel: function(){
+    this.bridge.move();
   }
 };
 

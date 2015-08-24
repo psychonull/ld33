@@ -12,6 +12,8 @@ var Bridge = function(game, monsterGroup, personGroup, bridgeGroup) {
 	  var width = 90;         //  This is the width for the physics body. If too small the rectangles will get scrambled together.
 	  var maxForce = 20000;   //  The force that holds the rectangles together.
 	  var newRect;
+	  this.first_block;
+	  this.last_block;
 
 	  var length = Math.floor(maxWidth/width),
 	    xAnchor = 0, yAnchor = settings.bridge_level;
@@ -26,8 +28,13 @@ var Bridge = function(game, monsterGroup, personGroup, bridgeGroup) {
 	      game.physics.p2.enable(newRect, false);
 	      newRect.body.setRectangle(width, height);
 
-	      if (i === 0 || i === length) {
+	      if (i === 0){
 	        newRect.body.static = true;
+	        this.first_block = newRect;
+	    	}
+	      else if(i === length){
+	      	newRect.body.static = true;
+	        this.last_block = newRect;
 	      }
 	      else {
 	        //newRect.body.velocity.y = game.physics.p2.gravity.y*-1;
@@ -59,5 +66,13 @@ Bridge.prototype.update = function() {
   // write your prefab's specific update code here
   
 };
+
+Bridge.prototype.move = function() {
+	settings.bridge_level -= 50;
+
+	this.first_block.body.y -= 50;
+	this.last_block.body.y -= 50;
+
+}
 
 module.exports = Bridge;
