@@ -1,13 +1,13 @@
 'use strict';
- 
+
 var movement = 250;
-var cursors;
+var cursors, aKey, dKey;
 var settings = require('../settings');
 
 
 var Monster = function(game, x, y, frame) {
   Phaser.Sprite.call(this, game, x, y, 'monster', frame);
-  this.maxSpeed = 1000;
+  this.maxSpeed = settings.monster_max_speed;
   this.inputEnabled = true;
 
   this.scale.x = 0.4;
@@ -15,15 +15,13 @@ var Monster = function(game, x, y, frame) {
 
   this.swimming = false;
   this.back_landing = false;
-  this.base_speed = 300;
+  this.base_speed = settings.monster_base_speed;
   this.speed = this.base_speed;
   this.turn_rate = 0.1;
   this.diveFX = game.add.audio('splash', 10);
   this.jumpFX = game.add.audio('roar', 15);
 
   game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.updateVelocity.bind(this));
-
-  //var stime = 1000;
 
   this.game.physics.p2.enable(this, false);
   this.body.setCircle(20);
@@ -37,15 +35,16 @@ var Monster = function(game, x, y, frame) {
   this.emitter.gravity = -10;
   this.emitter.start(false, 5000, 100);
 
-  cursors = this.game.input.keyboard.createCursorKeys(); 
-  
-  
+
+  cursors = this.game.input.keyboard.createCursorKeys();
+  aKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
+  dKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
 };
 
 Monster.prototype = Object.create(Phaser.Sprite.prototype);
 Monster.prototype.constructor = Monster;
 
-Monster.prototype.update = function() {  
+Monster.prototype.update = function() {
 
     this.emitter.emitX = this.x;
     this.emitter.emitY = this.y;
@@ -59,13 +58,13 @@ Monster.prototype.update = function() {
     this.fly();
   }
 
-  if (cursors.left.isDown)
+  if (cursors.left.isDown || aKey.isDown)
   {
     this.body.rotation -= this.turn_rate;
     this.body.angularVelocity = 0;
     //this.back_landing = false;
   }
-  else if (cursors.right.isDown)
+  else if (cursors.right.isDown || dKey.isDown)
   {
     this.body.rotation += this.turn_rate;
     this.body.angularVelocity = 0;
@@ -84,9 +83,6 @@ Monster.prototype.swim = function() {
     this.body.velocity.x = Math.cos(this.rotation) * this.speed;
     this.body.velocity.y = Math.sin(this.rotation) * this.speed;
   }
-
-
-  console.log(this.body.velocity.y);
 };
 
 Monster.prototype.updateVelocity = function() {
@@ -100,10 +96,10 @@ Monster.prototype.updateVelocity = function() {
 };
 
 Monster.prototype.fly = function() {
-  if (this.swimming) 
+  if (this.swimming)
 	  this.jump();
-  
-  this.swimming = false; 
+
+  this.swimming = false;
   this.body.data.gravityScale = 1;
 };
 
@@ -111,7 +107,7 @@ Monster.prototype.dive = function() {
   this.diveFX.play();
   if (this.angle < 0){
     this.back_landing = true;
-    this.speed = 0;    
+    this.speed = 0;
   }
 };
 
@@ -129,6 +125,11 @@ Monster.prototype.updateVelocity = function() {
 
 Monster.prototype.jump = function() {
   this.jumpFX.play();
+};
+
+Monster.prototype.increaseSize = function() {
+  this.scale.x += settings.growth_scale;
+  this.scale.y += settings.growth_scale;
 };
 
 module.exports = Monster;

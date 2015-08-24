@@ -26,7 +26,7 @@ Play.prototype = {
     var game = this.game;
     var ws = settings.worldSize;
     var wLevel = settings.water_level;
-    var imgSizeH = 1400;
+    var imgSizeH = settings.bg_image_size;
 
     game.onSpeedChange = new Phaser.Signal();
     game.add.tileSprite(0, wLevel-imgSizeH, ws.width, imgSizeH, 'bg_sky');
@@ -39,7 +39,7 @@ Play.prototype = {
 
     game.stage.backgroundColor = "#A6947B";
     game.physics.startSystem(Phaser.Physics.P2JS);
-    game.physics.p2.gravity.y = 400;
+    game.physics.p2.gravity.y = settings.gravity;
     game.physics.p2.setImpactEvents(true);
     game.physics.p2.restitution = 0.2;
 
@@ -50,7 +50,11 @@ Play.prototype = {
     personCollisionGroup = this.game.physics.p2.createCollisionGroup();
     this.game.physics.p2.updateBoundsCollisionGroup();
 
+<<<<<<< HEAD
     this.monster = new Monster(this.game, 800, 700);
+=======
+    this.monster = new Monster(this.game, 100, 100);
+>>>>>>> branch 'master' of https://github.com/psychonull/ld33.git
     this.monster.body.setCircle(28);
     this.monster.body.setCollisionGroup(monsterCollisionGroup);
     this.monster.body.collides(foodCollisionGroup, this.hitFood, this);
@@ -59,7 +63,10 @@ Play.prototype = {
     this.monster.body.collides(personCollisionGroup, this.hitPerson, this);
     this.game.add.existing(this.monster);
 
-    foodGenerator = new FoodGenerator(this.game, 500, 950, 50, monsterCollisionGroup, foodCollisionGroup)
+    var point1 = new Phaser.Point(0, wLevel);
+    var point2 = new Phaser.Point(ws.width, ws.height);
+
+    foodGenerator = new FoodGenerator(this.game, point1, point2, 50, monsterCollisionGroup, foodCollisionGroup)
     personGenerator = new PersonGenerator(this.game, 300, 340, 10000, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup);
     personGenerator.createPersons(1, 1);
 
@@ -96,8 +103,7 @@ Play.prototype = {
     person.destroy();
     this.hud.setTimer(20);
     personGenerator.createPersons(1, 100);
-    monster.sprite.scale.x += 0.05;
-    monster.sprite.scale.y += 0.05;
+    monster.sprite.increaseSize();
     //this.game.state.start('win');
   }
 };
