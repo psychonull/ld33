@@ -77,7 +77,7 @@ Food.prototype.update = function() {
 	else if (this.x >= this.originalX + 50)
 		this.body.force.x = -100;
 	if (this.y >= settings.worldSize.height - 50)
-		this.body.y = this.originalY;
+		this.body.y = settings.water_level+100;
 
   if(this.glow){
     this.updateLighting();
