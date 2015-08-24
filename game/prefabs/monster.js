@@ -23,9 +23,13 @@ var Monster = function(game, x, y, frame) {
 
   game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.updateVelocity.bind(this));
 
+  
   this.game.physics.p2.enable(this, false);
-  this.body.setCircle(20);
+  this.physicShape = this.body.setCircle(28);
+
   this.anchor.set(0.7,0.5);
+
+  this.body.debugBody.draw();
 
   cursors = this.game.input.keyboard.createCursorKeys();
   aKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
@@ -47,20 +51,18 @@ Monster.prototype.update = function() {
   if (cursors.left.isDown || aKey.isDown)
   {
     this.body.rotation -= this.turn_rate;
-    this.body.angularVelocity = 0;
-    //this.back_landing = false;
+    this.body.angularVelocity = 0;    
   }
   else if (cursors.right.isDown || dKey.isDown)
   {
     this.body.rotation += this.turn_rate;
-    this.body.angularVelocity = 0;
-    //this.back_landing = false;
+    this.body.angularVelocity = 0;    
   }
 };
 
 Monster.prototype.swim = function() {
   if (!this.swimming)
-      this.dive();
+    this.dive();
 
   this.swimming = true;
   this.body.data.gravityScale = -0.5;
@@ -116,6 +118,8 @@ Monster.prototype.jump = function() {
 Monster.prototype.increaseSize = function() {
   this.scale.x += settings.growth_scale;
   this.scale.y += settings.growth_scale;
+  
+  this.physicShape.radius += settings.growth_scale * 3;    
 };
 
 module.exports = Monster;
