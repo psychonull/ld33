@@ -50,6 +50,7 @@ Hud.prototype.constructor = Hud;
 
 Hud.prototype.update = function() {
   this.timer.update();
+  this.bar.update();
 };
 
 Hud.prototype.setTimer = function(value) {
