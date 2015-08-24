@@ -98,6 +98,9 @@ Play.prototype = {
   update: function() {
 	  foodGenerator.update();
 	  personGenerator.update();
+    if(this.game.stats.weight > 2.1){
+      this.preWin();
+    }
   },
   hitFood: function(monster, food) {
     this.game.stats.foodEaten++;
@@ -164,6 +167,11 @@ Play.prototype = {
   },
   winCallback: function(){
     this.game.state.start('win');
+  },
+  preWin: function(){
+    this.game.camera.follow(null);
+    this.game.camera.x += this.game.rnd.integerInRange(-20,20);
+    this.game.camera.y += this.game.rnd.integerInRange(-20,20);
   }
 };
 
