@@ -3,7 +3,7 @@ var Person = require('../prefabs/person');
 var monsterCollisionGroup;
 var personCollisionGroup;
 
-var PersonGenerator = function(game, x, y, timer, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup) {
+var PersonGenerator = function(game, x, y, timer, max, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup) {
 	this.personCollisionGroup = game.add.group();
 	this.posX = x;
 	this.posY = y;
@@ -12,42 +12,49 @@ var PersonGenerator = function(game, x, y, timer, monsterCollisionGroup, bridgeL
 	this.monsterCollisionGroup = monsterCollisionGroup;
 	this.personCollisionGroup = personCollisionGroup;
 	this.bridgeLineCollisionGroup = bridgeLineCollisionGroup
-	this.time = 0;
-	this.quantity = 0;
-	this.currentQuantity = 0;
+
+  this.persons = 0;
+  this.max = max;
+  this.kills = 0;
+
+  game.time.events.loop(Phaser.Timer.SECOND * 5, this.createPerson.bind(this));
 };
 
 PersonGenerator.prototype = Object.create(Phaser.Sprite.prototype);
 PersonGenerator.prototype.constructor = PersonGenerator;
 
 PersonGenerator.prototype.update = function() {
-	if (this.time == 0 && this.currentQuantity < this.quantity){
-		this.time = this.timer;
-		var person = new Person(this.game, this.posX, this.posY);
-    	person.body.setRectangle(40, 40);
-    	person.body.setCollisionGroup(this.personCollisionGroup);
-    	person.body.collides([this.personCollisionGroup, this.monsterCollisionGroup]);
-    	person.body.collides([this.personCollisionGroup, this.bridgeLineCollisionGroup]);
-    	person.body.collideWorldBounds = false;
-    	this.currentQuantity += 1;
-    	this.game.add.existing(person);
 
-      //this.game.camera.follow(person);
-	}
-	else{
-		if(this.time > 0)
-			this.time -= 1;
-	}
+  if (this.kills > 5 || this.kills > 10){
+    this.max--;
+    this.max = this.max < 1 ? 1 : this.max;
+  }
+
 };
 
 
+PersonGenerator.prototype.createPerson = function(){
 
+  if (this.persons > this.max){
+    return;
+  }
 
-PersonGenerator.prototype.createPersons = function(quantity, timer){
-	this.timer = timer;
-	this.time = timer;
-	this.quantity = quantity;
-	this.currentQuantity = 0;
-}
+  var person = new Person(this.game, this.posX, this.posY);
+  person.body.setRectangle(40, 40);
+  person.body.setCollisionGroup(this.personCollisionGroup);
+  person.body.collides([this.monsterCollisionGroup, this.bridgeLineCollisionGroup]);
+  person.body.collideWorldBounds = false;
+  this.game.add.existing(person);
+  this.persons++;
+};
+
+PersonGenerator.prototype.killedPerson = function(){
+  this.persons--;
+  this.kills++;
+};
+
+PersonGenerator.prototype.setMax = function(max){
+  this.max = max;
+};
 
 module.exports = PersonGenerator;
