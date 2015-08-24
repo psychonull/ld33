@@ -67,7 +67,7 @@ Play.prototype = {
     var point2 = new Phaser.Point(ws.width, ws.height);
 
     foodGenerator = new FoodGenerator(this.game, point1, point2, 75, monsterCollisionGroup, foodCollisionGroup)
-    personGenerator = new PersonGenerator(this.game, 300, 340, 10000, 2, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup);
+    personGenerator = new PersonGenerator(this.game, 300, 340, 10000, 3, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup);
 
     this.water = new Water(this.game, monsterCollisionGroup, waterLineCollisionGroup);
     this.game.add.existing(this.water);
@@ -117,17 +117,16 @@ Play.prototype = {
 	person.sprite.afterDestroyed();
 	person.sprite.destroy();
     person.destroy();
-    
-    this.hud.setTimer(20);
 
     personGenerator.killedPerson();
     monster.sprite.increaseSize();
     if(personGenerator.kills > 3)
-      check_point_time = 20;
-    else if(personGenerator.kills > 8)
       check_point_time = 10;
+    else if(personGenerator.kills > 8)
+      check_point_time = 8;
     else if(personGenerator.kills > 12)
       check_point_time = 5;
+
     this.hud.setTimer(check_point_time);
     var blood = this.game.add.emitter(x, y, 20);
 
