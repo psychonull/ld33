@@ -72,13 +72,13 @@ var Bridge = function(game, monsterGroup, personGroup, bridgeGroup) {
 	          maxForce);
 
 	        constraint.collideConnected = false;
-	        
-	        if (i === Math.floor(length/2)){	     			
+
+	        if (i === Math.floor(length/2)){
 	        	this.middle_contraint = constraint;
 	        }
 	      }
 
-	      
+
 
 	      lastRect = newRect;
 	    }
@@ -89,21 +89,28 @@ Bridge.prototype = Object.create(Phaser.Group.prototype);
 Bridge.prototype.constructor = Bridge;
 
 Bridge.prototype.update = function() {
-  
+
   // write your prefab's specific update code here
-  
+
 };
 
 Bridge.prototype.move = function() {
-	settings.bridge_level -= 50;
-
-	this.first_block.body.y -= 50;
-	this.last_block.body.y -= 50;
-
-	if (settings.bridge_level == 800)		
-		this.game.physics.p2.removeConstraint(this.middle_contraint);
-
+	this.moveTo(settings.bridge_level - 50);
 }
+
+Bridge.prototype.moveTo = function(yPos){
+	if(this.game.brokenBridge){
+		return;
+	}
+	settings.bridge_level = yPos;
+	this.first_block.body.y = yPos;
+	this.last_block.body.y = yPos;
+	if (settings.bridge_level == 800)	{
+		this.game.physics.p2.removeConstraint(this.middle_contraint);
+		this.game.brokenBridge = true;
+		this.game.onBrokenBridge.dispatch();
+	}
+};
 
 module.exports = Bridge;
 
@@ -484,6 +491,11 @@ Monster.prototype.increaseSize = function() {
 
   this.physicShape.radius += settings.growth_scale * 3;
   this.game.stats.weight = this.scale.y;
+
+  if(this.game.stats.weight > 2.5){
+    this.game.onWin.dispatch();
+  }
+
 };
 
 Monster.prototype.setSpeed = function(value) {
@@ -495,10 +507,11 @@ module.exports = Monster;
 
 },{"../settings":13}],7:[function(require,module,exports){
 'use strict';
+var _ = require('lodash');
 var settings = require('../settings');
 var Person = function(game, x, y, frame) {
   this.dir = game.rnd.integerInRange(0, 1);
-  
+
   if (this.dir === 0){
 	  this.dir = -1;
 	  x = settings.worldSize.width - 40;
@@ -508,9 +521,9 @@ var Person = function(game, x, y, frame) {
 	  x = 40;
 	  y = settings.bridge_level-35;
   };
-  
+
   Phaser.Sprite.call(this, game, x, y, 'person', frame);
-  
+
   this.x = x;
   this.y = y;
   this.originalX = x;
@@ -529,23 +542,34 @@ var Person = function(game, x, y, frame) {
 
   this.body.setZeroDamping();
   this.body.fixedRotation = true;
-  this.body.velocity.y = 0;
-  this.body.mass = 2;
-  
-  
+  if(!this.game.brokenBridge){
+    this.body.velocity.y = 0;
+    this.body.mass = 2;
+  }
+  else{
+    this.body.gravity = 10;
+    this.body.mass = 80;
+  }
+
+
+
   if (this.dir === -1){
 	  this.body.velocity.x = -200;
   }
   else {
 	  this.body.velocity.x = 200;
   };
-  
+
   this.scale.set(0.5);
   this.smoothed = false;
   this.frame = 0;
 
   this.animations.add('walk', [0, 1, 2, 3, 4, 5]);
+  this.animations.add('swim', [1]);
   this.animations.play('walk', 10, true);
+
+  this.swimming = false;
+  this.touchedWater = false;
 };
 
 Person.prototype = Object.create(Phaser.Sprite.prototype);
@@ -564,8 +588,11 @@ Person.prototype.afterDestroyed = function(){
 };
 
 Person.prototype.update = function() {
-	this.body.velocity.y = 40;
-	
+	if(this.game.brokenBridge){
+    return this.updateBrokenBridge();
+  }
+  this.body.velocity.y = 40;
+
 	if (this.x >= settings.worldSize.width - 40){
 		this.body.x = 40;
 		this.body.y = settings.bridge_level-35;
@@ -579,9 +606,44 @@ Person.prototype.update = function() {
 	this.body.velocity.x = this.dir*200;
 };
 
+Person.prototype.updateBrokenBridge = function(){
+  this.scale.set(0.5*this.dir, 0.5);
+  // HACK: LOL IDK what im doing
+  if (this.position.y > settings.water_level){
+    if(this.swimming){
+      this.animations.play('swim', 40, true);
+      this.body.data.gravityScale = -0.5;
+      this.body.velocity.x = this.dir* _.random(10, 50);
+      return;
+    }
+    else { // dive
+      //this.body.data.gravityScale = -1;
+      this.touchedWater = true;
+      this.swimming = true;
+      return;
+    }
+  }
+  else{
+    if(this.swimming){ //emerge
+      // this.body.data.gravityScale = -10;
+      // this.body.force.y = -3000;
+      this.body.velocity.y = _.random(-10, 0);
+      this.swimming = false;
+      return;
+    }
+    else {
+      if(!this.touchedWater){
+        this.body.velocity.x = this.dir*_.random(150, 350);
+      }
+      this.body.data.gravityScale = 0.5;
+    }
+
+  }
+};
+
 module.exports = Person;
 
-},{"../settings":13}],8:[function(require,module,exports){
+},{"../settings":13,"lodash":21}],8:[function(require,module,exports){
 'use strict';
 var Person = require('../prefabs/person');
 var monsterCollisionGroup;
@@ -601,7 +663,9 @@ var PersonGenerator = function(game, x, y, timer, max, monsterCollisionGroup, br
   this.max = max;
   this.kills = 0;
 
-  game.time.events.loop(Phaser.Timer.SECOND * 5, this.createPerson.bind(this));
+  this.personAddTimer = game.time.events.loop(Phaser.Timer.SECOND * 5, this.createPerson, this);
+
+	this.game.onBrokenBridge.add(this.onBrokenBridge, this);
 };
 
 PersonGenerator.prototype = Object.create(Phaser.Sprite.prototype);
@@ -616,17 +680,27 @@ PersonGenerator.prototype.update = function() {
 
 };
 
+PersonGenerator.prototype.onBrokenBridge = function(){
+	// generate ppl more frequently
+	this.game.time.events.remove(this.personAddTimer);
+	this.game.time.events.loop(this.game.rnd.integerInRange(600, 1000), this.createPerson, this);
+};
 
 PersonGenerator.prototype.createPerson = function(){
 
-  if (this.persons >= this.max){
+  if (this.persons >= this.max && !this.game.brokenBridge){
     return;
   }
 
   var person = new Person(this.game, this.posX, this.posY);
   person.body.setRectangle(40, 40);
   person.body.setCollisionGroup(this.personCollisionGroup);
-  person.body.collides([this.monsterCollisionGroup, this.bridgeLineCollisionGroup]);
+	if(this.game.brokenBridge){
+  	person.body.collides([this.monsterCollisionGroup]);
+	}
+	else {
+  	person.body.collides([this.monsterCollisionGroup, this.bridgeLineCollisionGroup]);
+	}
   person.body.collideWorldBounds = false;
   this.game.add.existing(person);
   this.persons++;
@@ -954,9 +1028,13 @@ module.exports = {
   monster_max_speed: 1000,
   growth_scale: 0.05,
   speed_growth: 100,
-  bridge_level: 1300,
+
+	bridge_level: 1300,
+	bridge_base_level: 1300, // HACK: Modify together with bridge_level
+
   check_point_time: 15
 };
+
 },{}],14:[function(require,module,exports){
 
 'use strict';
@@ -1258,6 +1336,10 @@ Play.prototype = {
       weight: 0
     };
 
+    this.game.onWin = new Phaser.Signal();
+
+    this.game.onWin.add(this.winCallback, this);
+
     this.starting_setting = _.cloneDeep(settings);
 
     game.onSpeedChange = new Phaser.Signal();
@@ -1294,6 +1376,9 @@ Play.prototype = {
     var point1 = new Phaser.Point(0, wLevel);
     var point2 = new Phaser.Point(ws.width, ws.height);
 
+    this.game.brokenBridge = false;
+    this.game.onBrokenBridge = new Phaser.Signal();
+
     foodGenerator = new FoodGenerator(this.game, point1, point2, 75, monsterCollisionGroup, foodCollisionGroup)
     personGenerator = new PersonGenerator(this.game, 300, 340, 10000, 3, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup);
 
@@ -1302,6 +1387,7 @@ Play.prototype = {
 
     this.bridge = new Bridge(this.game, monsterCollisionGroup, personCollisionGroup, bridgeLineCollisionGroup);
     this.game.add.existing(this.bridge);
+    this.bridge.moveTo(this.starting_setting.bridge_base_level);
 
     this.hud = new Hud(this.game);
     this.game.add.existing(this.hud);
@@ -1375,6 +1461,9 @@ Play.prototype = {
   },
   changeLevel: function(){
     this.bridge.move();
+  },
+  winCallback: function(){
+    this.game.state.start('win');
   }
 };
 
@@ -1453,13 +1542,13 @@ Win.prototype = {
 
   },
   create: function () {
-    this.titleText = this.game.add.bitmapText(400,100, 'p2', 'Game Over!', 42);
-    this.titleText.anchor.setTo(0.5, 0.5);
 
-    this.congratsText = this.game.add.bitmapText(400, 200, 'p2', 'You Win!', 32);
+    this.game.stage.backgroundColor = "#153030";
+
+    this.congratsText = this.game.add.bitmapText(400, 200, 'p2', 'CONGRATS!', 32);
     this.congratsText.anchor.setTo(0.5, 0.5);
 
-    this.instructionText = this.game.add.bitmapText(400, 300, 'p2', 'Click To Play Again', 16);
+    this.instructionText = this.game.add.bitmapText(400, 300, 'p2', 'You are the coolest mutant caused by chemical waste ever!', 12);
     this.instructionText.anchor.setTo(0.5, 0.5);
   },
   update: function () {
