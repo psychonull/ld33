@@ -68,14 +68,14 @@ Food.prototype.afterDestroyed = function(){
 	};
 };
 
-Food.prototype.update = function() {
+Food.prototype.update = function() {  
 	this.body.velocity.y = 10;
 	if (this.x <= this.originalX - 50)
 		this.body.force.x = 100;
 	else if (this.x >= this.originalX + 50)
 		this.body.force.x = -100;
-	if (this.y >= settings.worldSize.height - 50)
-		return this.destroy();
+	//if (this.y >= settings.worldSize.height - 50)
+	//	return this.destroy(); 
 
   if(this.glow){
     this.updateLighting();

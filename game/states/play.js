@@ -60,7 +60,7 @@ Play.prototype = {
     this.game.add.existing(this.monster);
 
     var point1 = new Phaser.Point(0, wLevel);
-    var point2 = new Phaser.Point(ws.width, wLevel + settings.bg_image_size);
+    var point2 = new Phaser.Point(ws.width, ws.height);
 
     foodGenerator = new FoodGenerator(this.game, point1, point2, 50, monsterCollisionGroup, foodCollisionGroup)
     personGenerator = new PersonGenerator(this.game, 300, 340, 10000, monsterCollisionGroup, bridgeLineCollisionGroup, personCollisionGroup);

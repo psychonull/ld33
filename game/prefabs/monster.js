@@ -1,7 +1,7 @@
 'use strict';
- 
+
 var movement = 250;
-var cursors;
+var cursors, aKey, dKey;
 var settings = require('../settings');
 
 
@@ -21,19 +21,21 @@ var Monster = function(game, x, y, frame) {
   this.diveFX = game.add.audio('splash', 10);
   this.jumpFX = game.add.audio('roar', 15);
 
-  game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.updateVelocity.bind(this));  
+  game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.updateVelocity.bind(this));
 
   this.game.physics.p2.enable(this, false);
   this.body.setCircle(20);
   this.anchor.set(0.7,0.5);
 
-  cursors = this.game.input.keyboard.createCursorKeys(); 
+  cursors = this.game.input.keyboard.createCursorKeys();
+  aKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
+  dKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
 };
 
 Monster.prototype = Object.create(Phaser.Sprite.prototype);
 Monster.prototype.constructor = Monster;
 
-Monster.prototype.update = function() {  
+Monster.prototype.update = function() {
 
   if (this.position.y > settings.water_level){
     this.swim();
@@ -42,13 +44,13 @@ Monster.prototype.update = function() {
     this.fly();
   }
 
-  if (cursors.left.isDown)
+  if (cursors.left.isDown || aKey.isDown)
   {
     this.body.rotation -= this.turn_rate;
     this.body.angularVelocity = 0;
     //this.back_landing = false;
   }
-  else if (cursors.right.isDown)
+  else if (cursors.right.isDown || dKey.isDown)
   {
     this.body.rotation += this.turn_rate;
     this.body.angularVelocity = 0;
@@ -66,7 +68,7 @@ Monster.prototype.swim = function() {
   if (!this.back_landing){
     this.body.velocity.x = Math.cos(this.rotation) * this.speed;
     this.body.velocity.y = Math.sin(this.rotation) * this.speed;
-  }  
+  }
 };
 
 Monster.prototype.updateVelocity = function() {
@@ -80,10 +82,10 @@ Monster.prototype.updateVelocity = function() {
 };
 
 Monster.prototype.fly = function() {
-  if (this.swimming) 
+  if (this.swimming)
 	  this.jump();
-  
-  this.swimming = false; 
+
+  this.swimming = false;
   this.body.data.gravityScale = 1;
 };
 
@@ -91,7 +93,7 @@ Monster.prototype.dive = function() {
   this.diveFX.play();
   if (this.angle < 0){
     this.back_landing = true;
-    this.speed = 0;    
+    this.speed = 0;
   }
 };
 
