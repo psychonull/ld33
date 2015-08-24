@@ -30,7 +30,7 @@ var Hud = function(game) {
   });
 
   this.timer.x = 50;
-  this.timer.y = 560;
+  this.timer.y = 565;
 
   this.game.add.existing(this.timer);
   this.add(this.timer);
