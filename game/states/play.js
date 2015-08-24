@@ -36,6 +36,7 @@ Play.prototype = {
 
     this.musicTheme = game.add.audio('theme', 0.5, true);
     this.musicTheme.play();
+    game.state.onStateChange.add(function(newState){this.game.sound.stopAll();}, this);
 
     game.stage.backgroundColor = "#A6947B";
     game.physics.startSystem(Phaser.Physics.P2JS);
