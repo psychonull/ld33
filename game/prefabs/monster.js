@@ -127,7 +127,8 @@ Monster.prototype.updateVelocity = function() {
 };
 
 Monster.prototype.jump = function() {
-  this.jumpFX.play();
+  if (this.speed >= 600)
+    this.jumpFX.play();
 };
 
 Monster.prototype.increaseSize = function() {
