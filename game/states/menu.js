@@ -13,7 +13,7 @@ Menu.prototype = {
 
     this.game.stage.backgroundColor = "#153030";
 
-    this.titleText =  this.game.add.bitmapText(this.game.world.centerX, 300, 'ka', 'WASTE MADNESS', 64);
+    this.titleText =  this.game.add.bitmapText(this.game.world.centerX, 300, 'ka', 'WASTED WATERS', 64);
     this.titleText.tint = 0x34f3ff;
     this.titleText.anchor.setTo(0.5, 0.5);
 
