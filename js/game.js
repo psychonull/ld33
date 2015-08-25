@@ -17,7 +17,7 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":14,"./states/gameover":15,"./states/instructions":16,"./states/menu":17,"./states/play":18,"./states/preload":19,"./states/win":20}],2:[function(require,module,exports){
+},{"./states/boot":15,"./states/gameover":16,"./states/instructions":17,"./states/menu":18,"./states/play":19,"./states/preload":20,"./states/win":21}],2:[function(require,module,exports){
 'use strict';
 var settings = require('../settings');
 
@@ -114,7 +114,7 @@ Bridge.prototype.moveTo = function(yPos){
 
 module.exports = Bridge;
 
-},{"../settings":13}],3:[function(require,module,exports){
+},{"../settings":14}],3:[function(require,module,exports){
 'use strict';
 var settings = require('../settings'),
   _ = require('lodash');
@@ -127,7 +127,7 @@ var Food = function(game, x, y, options) {
 
   this.x = x;
   this.y = y;
-  
+
   this.originalY = y;
 
   this.anchor.setTo(0.5, 0.5);
@@ -144,9 +144,9 @@ var Food = function(game, x, y, options) {
 
   game.physics.p2.enable(this);
 
-  this.screamFX1 = game.add.audio('tankEated1', 10);
-  this.screamFX2 = game.add.audio('tankEated2', 10);
-  this.screamFX3 = game.add.audio('tankEated3', 10);
+  this.screamFX1 = game.add.audio('tankEated1', 0.8);
+  this.screamFX2 = game.add.audio('tankEated2', 0.8);
+  this.screamFX3 = game.add.audio('tankEated3', 0.8);
 
   this.body.setZeroDamping();
   this.body.fixedRotation = true;
@@ -187,7 +187,7 @@ Food.prototype.afterDestroyed = function(){
 	};
 };
 
-Food.prototype.update = function() {  
+Food.prototype.update = function() {
 	this.body.velocity.y = 10;
 	if (this.x <= this.originalX - 50)
 		this.body.force.x = 100;
@@ -232,7 +232,7 @@ Food.prototype.updateLighting = function(){
 
 module.exports = Food;
 
-},{"../settings":13,"lodash":21}],4:[function(require,module,exports){
+},{"../settings":14,"lodash":22}],4:[function(require,module,exports){
 'use strict';
 var Food = require('../prefabs/food');
 var settings = require('../settings');
@@ -290,7 +290,7 @@ FoodGenerator.prototype.randomIntFromInterval = function(min,max){
 
 module.exports = FoodGenerator;
 
-},{"../prefabs/food":3,"../settings":13}],5:[function(require,module,exports){
+},{"../prefabs/food":3,"../settings":14}],5:[function(require,module,exports){
 'use strict';
 
 var Bar = require('./ui/bar.js'),
@@ -352,7 +352,7 @@ Hud.prototype.setTimer = function(value) {
 
 module.exports = Hud;
 
-},{"./ui/bar.js":9,"./ui/cowntdown.js":10,"./ui/muteButton.js":11,"lodash":21}],6:[function(require,module,exports){
+},{"./ui/bar.js":9,"./ui/cowntdown.js":10,"./ui/muteButton.js":11,"lodash":22}],6:[function(require,module,exports){
 'use strict';
 
 var movement = 250;
@@ -373,8 +373,8 @@ var Monster = function(game, x, y, frame) {
   this.base_speed = settings.monster_base_speed;
   this.speed = this.base_speed;
   this.turn_rate = 0.1;
-  this.diveFX = game.add.audio('splash', 10);
-  this.jumpFX = game.add.audio('roar', 15);
+  this.diveFX = game.add.audio('splash', 5);
+  this.jumpFX = game.add.audio('roar', 2);
 
   game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.updateVelocity.bind(this));
 
@@ -482,7 +482,8 @@ Monster.prototype.updateVelocity = function() {
 };
 
 Monster.prototype.jump = function() {
-  this.jumpFX.play();
+  if (this.speed >= 600)
+    this.jumpFX.play();
 };
 
 Monster.prototype.increaseSize = function() {
@@ -505,7 +506,7 @@ Monster.prototype.setSpeed = function(value) {
 
 module.exports = Monster;
 
-},{"../settings":13}],7:[function(require,module,exports){
+},{"../settings":14}],7:[function(require,module,exports){
 'use strict';
 var _ = require('lodash');
 var settings = require('../settings');
@@ -536,9 +537,9 @@ var Person = function(game, x, y, frame) {
 
   game.physics.p2.enable(this);
 
-  this.screamFX1 = game.add.audio('scream1', 10);
-  this.screamFX2 = game.add.audio('scream2', 10);
-  this.screamFX3 = game.add.audio('scream3', 10);
+  this.screamFX1 = game.add.audio('scream1', 2);
+  this.screamFX2 = game.add.audio('scream2', 2);
+  this.screamFX3 = game.add.audio('scream3', 2);
 
   this.body.setZeroDamping();
   this.body.fixedRotation = true;
@@ -643,7 +644,7 @@ Person.prototype.updateBrokenBridge = function(){
 
 module.exports = Person;
 
-},{"../settings":13,"lodash":21}],8:[function(require,module,exports){
+},{"../settings":14,"lodash":22}],8:[function(require,module,exports){
 'use strict';
 var Person = require('../prefabs/person');
 var monsterCollisionGroup;
@@ -805,7 +806,7 @@ var colorFromStringToNumber = function(str){
 
 module.exports = Bar;
 
-},{"lodash":21}],10:[function(require,module,exports){
+},{"lodash":22}],10:[function(require,module,exports){
 'use strict';
 var _ = require('lodash');
 
@@ -838,6 +839,9 @@ var Cowntdown = function(game, options) {
 
   this._timeStarted = null;
 
+  this.alertSFX = game.add.audio('timer-beep', 0.8);
+  this.alertLoop = null;
+
   if(this.config.callback){
     this.expired.add(this.config.callback);
   }
@@ -863,9 +867,14 @@ Cowntdown.prototype.update = function() {
         this.text.tint = this.config.alertTint;
         this.text.x = this.config.x + this.game.rnd.integerInRange(-3,3);
         this.text.y = this.config.y + this.game.rnd.integerInRange(-3,3);
+        if(!this.alertLoop){
+          this.playBeep();
+          this.alertLoop = this.game.time.events.loop(Phaser.Timer.SECOND, this.playBeep, this);
+        }
       }
       else {
         this.text.tint = this.config.tint;
+        this.clearBeepInterval();
       }
     }
 
@@ -882,11 +891,13 @@ Cowntdown.prototype.start = function(value) {
 
 Cowntdown.prototype.stop = function(){
   this._timeStarted = null;
+  this.clearBeepInterval();
 };
 
 Cowntdown.prototype.pause = function(){
   this.value = this.value - (this.game.time.time - this._timeStarted);
   this._timeStarted = null;
+  this.clearBeepInterval();
 };
 
 Cowntdown.prototype.formatTime = function(ms){
@@ -909,9 +920,18 @@ Cowntdown.prototype.formatTime = function(ms){
   return mins + ':' + seconds + '.' + milliseconds;
 };
 
+Cowntdown.prototype.clearBeepInterval = function(){
+  this.game.time.events.remove(this.alertLoop);
+  this.alertLoop = null;
+};
+
+Cowntdown.prototype.playBeep = function(){
+  this.alertSFX.play();
+};
+
 module.exports = Cowntdown;
 
-},{"lodash":21}],11:[function(require,module,exports){
+},{"lodash":22}],11:[function(require,module,exports){
 'use strict';
 
 var MuteButton = function(game, x, y, frame) {
@@ -941,6 +961,19 @@ MuteButton.prototype.loadFromLocalStorage = function(){
 module.exports = MuteButton;
 
 },{}],12:[function(require,module,exports){
+'use strict';
+var _ = require('lodash');
+
+module.exports = function(bitmapFont, callback, context){
+
+  var sound = bitmapFont.game.add.audio('select', 0.7);
+  sound.play();
+  var tween = bitmapFont.game.add.tween(bitmapFont).to({tint: 0xFF0000 }, 300, Phaser.Easing.Elastic.InOut, true);
+  tween.onComplete.add(callback, context);
+  //callback.call(context || this);
+};
+
+},{"lodash":22}],13:[function(require,module,exports){
 'use strict';
 
 var settings = require('../settings');
@@ -1015,7 +1048,7 @@ Water.prototype.splash = function(waterHit){
 
 module.exports = Water;
 
-},{"../settings":13}],13:[function(require,module,exports){
+},{"../settings":14}],14:[function(require,module,exports){
 module.exports = {
 	worldSize: {
     width: 1000,
@@ -1035,7 +1068,7 @@ module.exports = {
   check_point_time: 15
 };
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 
 'use strict';
 
@@ -1055,14 +1088,15 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 
 'use strict';
 var _ = require('lodash');
+var select = require('../prefabs/ui/selectEffect.js');
 
 var INITIAL_WEIGHT = 220;
 var MONSTER_OUTLINE_INITIAL_SCALE = 0.4;
-var FINAL_FORM_WEIGHT = INITIAL_WEIGHT * (1 + 1.8 - MONSTER_OUTLINE_INITIAL_SCALE)
+var FINAL_FORM_WEIGHT = INITIAL_WEIGHT * (1 + 2.5 - MONSTER_OUTLINE_INITIAL_SCALE)
 
 function GameOver() {}
 
@@ -1182,16 +1216,20 @@ GameOver.prototype = {
   },
   toNextSubState: function(){
     if(this.animatedLoss){
-      this.game.input.keyboard.onDownCallback = _.noop;
-      this.game.state.start('play');
+      select(this.instructionText, function(){
+        this.game.input.keyboard.onDownCallback = _.noop;
+        this.game.state.start('play');
+      }, this);
     }
   }
 };
 module.exports = GameOver;
 
-},{"lodash":21}],16:[function(require,module,exports){
+},{"../prefabs/ui/selectEffect.js":12,"lodash":22}],17:[function(require,module,exports){
 
 'use strict';
+var select = require('../prefabs/ui/selectEffect.js');
+var _ = require('lodash');
 
 function Menu() {}
 
@@ -1223,10 +1261,7 @@ Menu.prototype = {
     this.instructionsText =  this.game.add.bitmapText(80, 550, 'p2', '<<Press any key to continue>>', 22);
     this.instructionsText.tint = 0xccccc;
 
-    this.game.input.keyboard.onDownCallback = function(e) {
-      this.game.state.start('play');
-      this.game.input.keyboard.onDownCallback = function(){};
-    };
+    this.game.input.keyboard.onDownCallback = _.bind(this.continue, this);
 
     var instructionsSeen = parseInt(window.localStorage.getItem('instructionsSeen') || 0,10);
     window.localStorage.setItem('instructionsSeen', instructionsSeen + 1);
@@ -1234,18 +1269,24 @@ Menu.prototype = {
   },
   update: function() {
     if(this.game.input.activePointer.justPressed()) {
+      this.continue();
+    }
+  },
+  continue: function() {
+    select(this.instructionsText, function(){
       this.game.input.keyboard.onDownCallback = function(){};
       this.game.state.start('play');
-    }
+    }, this);
   }
 };
 
 module.exports = Menu;
 
-},{}],17:[function(require,module,exports){
+},{"../prefabs/ui/selectEffect.js":12,"lodash":22}],18:[function(require,module,exports){
 
 'use strict';
 var _ = require('lodash');
+var select = require('../prefabs/ui/selectEffect.js');
 
 function Menu() {}
 
@@ -1257,7 +1298,7 @@ Menu.prototype = {
 
     this.game.stage.backgroundColor = "#153030";
 
-    this.titleText =  this.game.add.bitmapText(this.game.world.centerX, 300, 'ka', 'WASTE MADNESS', 64);
+    this.titleText =  this.game.add.bitmapText(this.game.world.centerX, 300, 'ka', 'WASTED WATERS', 64);
     this.titleText.tint = 0x34f3ff;
     this.titleText.anchor.setTo(0.5, 0.5);
 
@@ -1267,8 +1308,8 @@ Menu.prototype = {
 
     this.instructionsSeen = parseInt(window.localStorage.getItem('instructionsSeen') || 0,10);
     if(this.instructionsSeen > 0){
-      this.instructionsText =  this.game.add.bitmapText(this.game.world.centerX, 560, 'p2', 'Press <h> for help', 12);
-      this.instructionsText.tint = 0x34f3ff;
+      this.helpText =  this.game.add.bitmapText(this.game.world.centerX, 560, 'p2', 'Press <h> for help', 12);
+      this.helpText.tint = 0x34f3ff;
     }
 
     this.game.input.keyboard.onDownCallback = _.bind(this.passToNextState, this);
@@ -1286,10 +1327,14 @@ Menu.prototype = {
     }
     else {
       if(e && e.keyCode === 72){
-        this.game.state.start('instructions');
+        select(this.helpText, function(){
+          this.game.state.start('instructions');
+        }, this);
       }
       else {
-        this.game.state.start('play');
+        select(this.instructionsText, function(){
+          this.game.state.start('play');
+        }, this);
       }
     }
   }
@@ -1297,7 +1342,7 @@ Menu.prototype = {
 
 module.exports = Menu;
 
-},{"lodash":21}],18:[function(require,module,exports){
+},{"../prefabs/ui/selectEffect.js":12,"lodash":22}],19:[function(require,module,exports){
 'use strict';
 
 var FoodGenerator = require('../prefabs/foodGenerator');
@@ -1348,7 +1393,7 @@ Play.prototype = {
 
     game.world.setBounds(0, 0, ws.width, ws.height);
 
-    this.musicTheme = game.add.audio('theme', 0.5, true);
+    this.musicTheme = game.add.audio('theme', 0.4, true);
     this.musicTheme.play();
     game.state.onStateChange.add(function(newState){this.game.sound.stopAll();}, this);
 
@@ -1398,6 +1443,9 @@ Play.prototype = {
   update: function() {
 	  foodGenerator.update();
 	  personGenerator.update();
+    if(this.game.stats.weight > 2.1){
+      this.preWin();
+    }
   },
   hitFood: function(monster, food) {
     this.game.stats.foodEaten++;
@@ -1464,12 +1512,17 @@ Play.prototype = {
   },
   winCallback: function(){
     this.game.state.start('win');
+  },
+  preWin: function(){
+    this.game.camera.follow(null);
+    this.game.camera.x += this.game.rnd.integerInRange(-20,20);
+    this.game.camera.y += this.game.rnd.integerInRange(-20,20);
   }
 };
 
 module.exports = Play;
 
-},{"../prefabs/bridge":2,"../prefabs/food":3,"../prefabs/foodGenerator":4,"../prefabs/hud.js":5,"../prefabs/monster":6,"../prefabs/person":7,"../prefabs/personGenerator":8,"../prefabs/water":12,"../settings":13,"lodash":21}],19:[function(require,module,exports){
+},{"../prefabs/bridge":2,"../prefabs/food":3,"../prefabs/foodGenerator":4,"../prefabs/hud.js":5,"../prefabs/monster":6,"../prefabs/person":7,"../prefabs/personGenerator":8,"../prefabs/water":13,"../settings":14,"lodash":22}],20:[function(require,module,exports){
 
 'use strict';
 function Preload() {
@@ -1506,6 +1559,8 @@ Preload.prototype = {
     this.load.bitmapFont('arcade', 'assets/fonts/arcade.png', 'assets/fonts/arcade.fnt');
     this.load.bitmapFont('p2', 'assets/fonts/p2.png', 'assets/fonts/p2.fnt');
 
+    this.load.audio('timer-beep', 'assets/audio/soundEffects/timer.wav');
+    this.load.audio('select', 'assets/audio/soundEffects/select.wav');
     this.load.audio('splash', 'assets/audio/soundEffects/splash.mp3');
     this.load.audio('theme', 'assets/audio/music/musicTheme.wav');
     this.load.audio('scream1', 'assets/audio/soundEffects/scream1.mp3');
@@ -1532,7 +1587,7 @@ Preload.prototype = {
 
 module.exports = Preload;
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 
 'use strict';
 function Win() {}
@@ -1559,7 +1614,7 @@ Win.prototype = {
 };
 module.exports = Win;
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 (function (global){
 /**
  * @license
