@@ -1,6 +1,7 @@
 
 'use strict';
 var _ = require('lodash');
+var select = require('../prefabs/ui/selectEffect.js');
 
 var INITIAL_WEIGHT = 220;
 var MONSTER_OUTLINE_INITIAL_SCALE = 0.4;
@@ -124,8 +125,10 @@ GameOver.prototype = {
   },
   toNextSubState: function(){
     if(this.animatedLoss){
-      this.game.input.keyboard.onDownCallback = _.noop;
-      this.game.state.start('play');
+      select(this.instructionText, function(){
+        this.game.input.keyboard.onDownCallback = _.noop;
+        this.game.state.start('play');
+      }, this);
     }
   }
 };

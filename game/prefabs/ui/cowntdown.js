@@ -30,6 +30,9 @@ var Cowntdown = function(game, options) {
 
   this._timeStarted = null;
 
+  this.alertSFX = game.add.audio('timer-beep', 1);
+  this.alertLoop = null;
+
   if(this.config.callback){
     this.expired.add(this.config.callback);
   }
@@ -55,9 +58,14 @@ Cowntdown.prototype.update = function() {
         this.text.tint = this.config.alertTint;
         this.text.x = this.config.x + this.game.rnd.integerInRange(-3,3);
         this.text.y = this.config.y + this.game.rnd.integerInRange(-3,3);
+        if(!this.alertLoop){
+          this.playBeep();
+          this.alertLoop = this.game.time.events.loop(Phaser.Timer.SECOND, this.playBeep, this);
+        }
       }
       else {
         this.text.tint = this.config.tint;
+        this.clearBeepInterval();
       }
     }
 
@@ -74,11 +82,13 @@ Cowntdown.prototype.start = function(value) {
 
 Cowntdown.prototype.stop = function(){
   this._timeStarted = null;
+  this.clearBeepInterval();
 };
 
 Cowntdown.prototype.pause = function(){
   this.value = this.value - (this.game.time.time - this._timeStarted);
   this._timeStarted = null;
+  this.clearBeepInterval();
 };
 
 Cowntdown.prototype.formatTime = function(ms){
@@ -99,6 +109,15 @@ Cowntdown.prototype.formatTime = function(ms){
     mins = '0';
   }
   return mins + ':' + seconds + '.' + milliseconds;
+};
+
+Cowntdown.prototype.clearBeepInterval = function(){
+  this.game.time.events.remove(this.alertLoop);
+  this.alertLoop = null;
+};
+
+Cowntdown.prototype.playBeep = function(){
+  this.alertSFX.play();
 };
 
 module.exports = Cowntdown;

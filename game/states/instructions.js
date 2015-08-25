@@ -1,5 +1,7 @@
 
 'use strict';
+var select = require('../prefabs/ui/selectEffect.js');
+var _ = require('lodash');
 
 function Menu() {}
 
@@ -31,10 +33,7 @@ Menu.prototype = {
     this.instructionsText =  this.game.add.bitmapText(80, 550, 'p2', '<<Press any key to continue>>', 22);
     this.instructionsText.tint = 0xccccc;
 
-    this.game.input.keyboard.onDownCallback = function(e) {
-      this.game.state.start('play');
-      this.game.input.keyboard.onDownCallback = function(){};
-    };
+    this.game.input.keyboard.onDownCallback = _.bind(this.continue, this);
 
     var instructionsSeen = parseInt(window.localStorage.getItem('instructionsSeen') || 0,10);
     window.localStorage.setItem('instructionsSeen', instructionsSeen + 1);
@@ -42,9 +41,14 @@ Menu.prototype = {
   },
   update: function() {
     if(this.game.input.activePointer.justPressed()) {
+      this.continue();
+    }
+  },
+  continue: function() {
+    select(this.instructionsText, function(){
       this.game.input.keyboard.onDownCallback = function(){};
       this.game.state.start('play');
-    }
+    }, this);
   }
 };
 

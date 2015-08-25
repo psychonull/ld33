@@ -1,6 +1,7 @@
 
 'use strict';
 var _ = require('lodash');
+var select = require('../prefabs/ui/selectEffect.js');
 
 function Menu() {}
 
@@ -22,8 +23,8 @@ Menu.prototype = {
 
     this.instructionsSeen = parseInt(window.localStorage.getItem('instructionsSeen') || 0,10);
     if(this.instructionsSeen > 0){
-      this.instructionsText =  this.game.add.bitmapText(this.game.world.centerX, 560, 'p2', 'Press <h> for help', 12);
-      this.instructionsText.tint = 0x34f3ff;
+      this.helpText =  this.game.add.bitmapText(this.game.world.centerX, 560, 'p2', 'Press <h> for help', 12);
+      this.helpText.tint = 0x34f3ff;
     }
 
     this.game.input.keyboard.onDownCallback = _.bind(this.passToNextState, this);
@@ -41,10 +42,14 @@ Menu.prototype = {
     }
     else {
       if(e && e.keyCode === 72){
-        this.game.state.start('instructions');
+        select(this.helpText, function(){
+          this.game.state.start('instructions');
+        }, this);
       }
       else {
-        this.game.state.start('play');
+        select(this.instructionsText, function(){
+          this.game.state.start('play');
+        }, this);
       }
     }
   }

@@ -34,6 +34,8 @@ Preload.prototype = {
     this.load.bitmapFont('arcade', 'assets/fonts/arcade.png', 'assets/fonts/arcade.fnt');
     this.load.bitmapFont('p2', 'assets/fonts/p2.png', 'assets/fonts/p2.fnt');
 
+    this.load.audio('timer-beep', 'assets/audio/soundEffects/timer.wav');
+    this.load.audio('select', 'assets/audio/soundEffects/select.wav');
     this.load.audio('splash', 'assets/audio/soundEffects/splash.mp3');
     this.load.audio('theme', 'assets/audio/music/musicTheme.wav');
     this.load.audio('scream1', 'assets/audio/soundEffects/scream1.mp3');
