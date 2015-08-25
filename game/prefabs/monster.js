@@ -18,8 +18,8 @@ var Monster = function(game, x, y, frame) {
   this.base_speed = settings.monster_base_speed;
   this.speed = this.base_speed;
   this.turn_rate = 0.1;
-  this.diveFX = game.add.audio('splash', 10);
-  this.jumpFX = game.add.audio('roar', 15);
+  this.diveFX = game.add.audio('splash', 5);
+  this.jumpFX = game.add.audio('roar', 2);
 
   game.time.events.loop(Phaser.Timer.SECOND * 0.1, this.updateVelocity.bind(this));
 

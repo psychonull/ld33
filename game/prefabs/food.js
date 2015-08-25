@@ -10,7 +10,7 @@ var Food = function(game, x, y, options) {
 
   this.x = x;
   this.y = y;
-  
+
   this.originalY = y;
 
   this.anchor.setTo(0.5, 0.5);
@@ -27,9 +27,9 @@ var Food = function(game, x, y, options) {
 
   game.physics.p2.enable(this);
 
-  this.screamFX1 = game.add.audio('tankEated1', 10);
-  this.screamFX2 = game.add.audio('tankEated2', 10);
-  this.screamFX3 = game.add.audio('tankEated3', 10);
+  this.screamFX1 = game.add.audio('tankEated1', 0.8);
+  this.screamFX2 = game.add.audio('tankEated2', 0.8);
+  this.screamFX3 = game.add.audio('tankEated3', 0.8);
 
   this.body.setZeroDamping();
   this.body.fixedRotation = true;
@@ -70,7 +70,7 @@ Food.prototype.afterDestroyed = function(){
 	};
 };
 
-Food.prototype.update = function() {  
+Food.prototype.update = function() {
 	this.body.velocity.y = 10;
 	if (this.x <= this.originalX - 50)
 		this.body.force.x = 100;

@@ -30,7 +30,7 @@ var Cowntdown = function(game, options) {
 
   this._timeStarted = null;
 
-  this.alertSFX = game.add.audio('timer-beep', 1);
+  this.alertSFX = game.add.audio('timer-beep', 0.8);
   this.alertLoop = null;
 
   if(this.config.callback){

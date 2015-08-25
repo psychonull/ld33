@@ -28,9 +28,9 @@ var Person = function(game, x, y, frame) {
 
   game.physics.p2.enable(this);
 
-  this.screamFX1 = game.add.audio('scream1', 10);
-  this.screamFX2 = game.add.audio('scream2', 10);
-  this.screamFX3 = game.add.audio('scream3', 10);
+  this.screamFX1 = game.add.audio('scream1', 2);
+  this.screamFX2 = game.add.audio('scream2', 2);
+  this.screamFX3 = game.add.audio('scream3', 2);
 
   this.body.setZeroDamping();
   this.body.fixedRotation = true;

@@ -48,7 +48,7 @@ Play.prototype = {
 
     game.world.setBounds(0, 0, ws.width, ws.height);
 
-    this.musicTheme = game.add.audio('theme', 0.5, true);
+    this.musicTheme = game.add.audio('theme', 0.4, true);
     this.musicTheme.play();
     game.state.onStateChange.add(function(newState){this.game.sound.stopAll();}, this);
 
